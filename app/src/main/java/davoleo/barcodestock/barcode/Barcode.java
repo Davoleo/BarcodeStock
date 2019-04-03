@@ -22,6 +22,4 @@ public class Barcode {
         this.description = description;
         this.price = price;
     }
-
-
 }

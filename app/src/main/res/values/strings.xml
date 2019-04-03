@@ -2,4 +2,6 @@
     <string name="app_name">BarcodeStock</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_barcode">ActivityAddBarcode</string>
+    <string name="label_barcode_title">Title</string>
+    <string name="label_barcode_desc">Description</string>
 </resources>
