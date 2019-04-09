@@ -4,4 +4,7 @@
     <string name="title_activity_add_barcode">ActivityAddBarcode</string>
     <string name="label_barcode_title">Title</string>
     <string name="label_barcode_desc">Description</string>
+    <string name="label_barcode_price">Price</string>
+    <string name="label_barcode_quantity">Quantity</string>
+    <string name="label_barcode_code">Bar Code</string>
 </resources>
