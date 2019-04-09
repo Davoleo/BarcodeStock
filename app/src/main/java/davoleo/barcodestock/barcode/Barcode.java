@@ -13,6 +13,7 @@ public class Barcode {
     private int code;
     private String title;
     private String description;
+    private int quantity;
     private int price;
 
     public Barcode(int code, String title, String description, int price)
