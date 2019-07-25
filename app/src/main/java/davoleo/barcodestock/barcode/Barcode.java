@@ -16,12 +16,11 @@ public class Barcode {
     private int quantity;
     private int price;
 
-    public Barcode(int code, String title, String description, int quantity, int price)
+    public Barcode(int code, String title, String description, int price)
     {
         this.code = code;
         this.title = title;
         this.description = description;
-        this.quantity = quantity;
         this.price = price;
     }
 }

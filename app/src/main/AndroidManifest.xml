@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="davoleo.barcodestock">
+          xmlns:tools="http://schemas.android.com/tools" package="davoleo.barcodestock">
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/bs_icon"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/bs_icon"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
         <activity
                 android:name=".ActivityAddBarcode"
                 android:label="@string/title_activity_add_barcode"
