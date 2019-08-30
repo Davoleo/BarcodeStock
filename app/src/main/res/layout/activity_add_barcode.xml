@@ -20,114 +20,121 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:layout_marginTop="56dp"
-    >
+            android:orientation="vertical" android:visibility="visible">
 
-        <TextView
-                android:text="@string/label_barcode_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView"
-                android:padding="@dimen/padding_default"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="20dp"/>
-        <TextView
-                android:text="@string/label_barcode_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView2"
-                android:padding="@dimen/padding_default"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:layout_marginTop="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"/>
-        <TextView
-                android:text="@string/label_barcode_price"
-                android:layout_width="68dp"
-                android:layout_height="wrap_content" android:id="@+id/textView4"
-                android:padding="@dimen/padding_default"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"/>
-        <TextView
-                android:text="@string/label_barcode_quantity"
-                android:layout_width="80dp"
-                android:layout_height="42dp" android:id="@+id/textView5"
-                android:padding="@dimen/padding_default"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="20dp"/>
-        <TextView
-                android:text="@string/label_barcode_code"
-                android:layout_width="wrap_content"
-                android:layout_height="47dp" android:id="@+id/textView6"
-                android:padding="@dimen/padding_default"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp" android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView"/>
-        <EditText
-                android:layout_width="215dp"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/txbTitle"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="20dp" app:layout_constraintStart_toEndOf="@+id/textView"
-                android:layout_marginStart="57dp"/>
-        <EditText
-                android:layout_width="215dp"
-                android:layout_height="71dp"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/txbDesc" android:textAllCaps="false"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/txbPrice" app:layout_constraintStart_toEndOf="@+id/textView2"
-                android:layout_marginStart="10dp"/>
-        <EditText
-                android:layout_width="138dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/txbPrice"
-                android:hint="€0.00"
-                android:layout_marginTop="22dp"
-                app:layout_constraintTop_toBottomOf="@+id/txbQuantity"
-                app:layout_constraintStart_toEndOf="@+id/textView4" android:layout_marginStart="38dp"/>
-        <EditText
-                android:layout_width="102dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/txbQuantity"
-                android:hint="0" android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/txbCode"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                android:layout_marginStart="23dp"/>
-        <EditText
-                android:layout_width="215dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/txbCode"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@+id/txbTitle"
-                app:layout_constraintStart_toEndOf="@+id/textView6" android:layout_marginStart="28dp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView
+                    android:text="@string/label_barcode_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelTitle"
+                    android:padding="@dimen/padding_default"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:labelFor="@id/txbTitle"
+            />
+            <EditText
+                    android:layout_width="215dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/txbTitle"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="57dp"
+                    android:maxLength="@integer/title_max_length"
+                    android:importantForAutofill="no" tools:targetApi="o"
+                    android:labelFor="@id/labelTitle"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:visibility="visible"
+        >
+            <TextView
+                    android:text="@string/label_barcode_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelDesc"
+                    android:padding="@dimen/padding_default"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="25dp"
+                    android:labelFor="@id/txbDesc"
+            />
+            <EditText
+                    android:layout_width="215dp"
+                    android:layout_height="71dp"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/txbDesc"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:maxLength="100"
+                    android:importantForAutofill="no" tools:targetApi="o"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/label_barcode_price"
+                    android:layout_width="68dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelPrice"
+                    android:padding="@dimen/padding_default"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_marginStart="16dp"
+                    android:labelFor="@id/txbPrice"/>
+            <EditText
+                    android:layout_width="138dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/txbPrice"
+                    android:layout_marginStart="38dp"
+                    android:importantForAutofill="no" tools:targetApi="o" />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/label_barcode_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="47dp"
+                    android:id="@+id/labelCode"
+                    android:padding="@dimen/padding_default"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:labelFor="@id/txbCode"
+            />
+            <EditText
+                    android:layout_width="215dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/txbCode"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="28dp"
+                    android:importantForAutofill="no" tools:targetApi="o"/>
+        </LinearLayout>
         <Button
-                android:text="Add"
+                android:text="@string/btn_add"
                 android:layout_width="189dp"
                 android:layout_height="60dp"
                 android:id="@+id/button" android:textSize="20sp"
                 android:layout_marginTop="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/txbDesc" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="89dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="133dp"
+                android:layout_marginStart="133dp"
                 android:onClick="addBarcode"/>
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

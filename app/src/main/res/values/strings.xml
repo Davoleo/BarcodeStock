@@ -7,4 +7,5 @@
     <string name="label_barcode_price">Price</string>
     <string name="label_barcode_quantity">Quantity</string>
     <string name="label_barcode_code">Bar Code</string>
+    <string name="btn_add">Add</string>
 </resources>
