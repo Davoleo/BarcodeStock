@@ -1,5 +1,9 @@
 package davoleo.barcodestock.barcode;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 29/03/2019 / 16:19
@@ -8,15 +12,25 @@ package davoleo.barcodestock.barcode;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
+@Entity
 public class Barcode {
 
-    private int code;
-    private String title;
-    private String description;
-    private int quantity;
-    private int price;
+    @PrimaryKey
+    public int uid;
 
-    public Barcode(int code, String title, String description, int price)
+    @ColumnInfo(name = "barcode")
+    private int code;
+
+    @ColumnInfo(name = "product_title")
+    private String title;
+
+    @ColumnInfo(name = "product_desc")
+    private String description;
+
+    @ColumnInfo(name = "product_price")
+    private float price;
+
+    public Barcode(int code, String title, String description, float price)
     {
         this.code = code;
         this.title = title;
