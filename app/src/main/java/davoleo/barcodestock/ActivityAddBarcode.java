@@ -1,10 +1,12 @@
 package davoleo.barcodestock;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 import davoleo.barcodestock.barcode.Barcode;
 
 public class ActivityAddBarcode extends AppCompatActivity {
@@ -21,14 +23,22 @@ public class ActivityAddBarcode extends AppCompatActivity {
 
     public void addBarcode(View view)
     {
-        String title = ((TextView)findViewById(R.id.txbTitle)).getText().toString();
-        String desc = ((TextView) findViewById(R.id.txbDesc)).getText().toString();
-        int code = Integer.parseInt(((TextView) findViewById(R.id.txbCode)).getText().toString());
-        float price = Float.parseFloat(((TextView) findViewById(R.id.txbPrice)).getText().toString());
+        Editable txbCode = ((EditText) findViewById(R.id.txbCode)).getText();
+        Editable txbPrice = ((EditText) findViewById(R.id.txbPrice)).getText();
 
-        //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
-        Barcode barcode = new Barcode(code, title, desc, price);
+        String title = ((EditText)findViewById(R.id.txbTitle)).getText().toString();
+        String desc = ((EditText) findViewById(R.id.txbDesc)).getText().toString();
 
+        if (!txbCode.toString().matches("\\d*") && txbPrice.toString().matches("\\d*\\.?\\d*"))
+        {
+            int code = Integer.parseInt(txbCode.toString());
+            float price = Float.parseFloat(txbPrice.toString());
 
+            //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
+            Barcode barcode = new Barcode(code, title, desc, price);
+            MainActivity.getDatabaseDAO().insert(barcode);
+
+            this.finish();
+        }
     }
 }

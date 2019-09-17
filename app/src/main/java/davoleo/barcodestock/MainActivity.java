@@ -9,8 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import androidx.room.Room;
+import davoleo.barcodestock.barcode.BarcodeDAO;
+import davoleo.barcodestock.barcode.BarcodeDatabase;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static BarcodeDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode-db").build();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,5 +64,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    public static BarcodeDAO getDatabaseDAO() {
+        return database.barcodeDAO();
     }
 }
