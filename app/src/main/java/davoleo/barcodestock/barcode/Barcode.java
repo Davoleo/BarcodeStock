@@ -37,4 +37,20 @@ public class Barcode {
         this.description = description;
         this.price = price;
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public float getPrice() {
+        return price;
+    }
 }

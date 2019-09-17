@@ -24,6 +24,9 @@ public interface BarcodeDAO {
     @Query("SELECT * FROM `barcode-list` WHERE product_title IN (:name)")
     List<Barcode> loadAllByName(String name);
 
+    @Query("SELECT COUNT(*) FROM `barcode-list`")
+    int getBarcodesCount();
+
     @Insert
     void insert(Barcode barcode);
 

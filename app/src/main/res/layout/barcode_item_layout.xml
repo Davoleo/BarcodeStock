@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:gravity="center_vertical">
+
+    <TextView
+            android:textSize="22sp"
+            android:text="Product Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcodeTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_marginBottom="31dp"
+            android:gravity="start"
+            android:layout_alignBottom="@+id/barcodeDesc"/>
+
+    <TextView
+            android:textSize="14sp"
+            android:text="Product Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcodeDesc"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+    />
+
+    <TextView
+            android:textSize="16sp"
+            android:text="Product Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcodePrice"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_alignTop="@+id/barcodeDesc"
+            android:layout_marginTop="32dp"/>
+
+    <TextView
+            android:textSize="16sp"
+            android:text="Barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcode"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:layout_alignTop="@+id/barcodeTitle"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="216dp"
+            android:layout_alignStart="@+id/barcodeTitle" android:textStyle="bold"/>
+
+</RelativeLayout>
