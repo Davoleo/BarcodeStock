@@ -18,7 +18,10 @@ import davoleo.barcodestock.barcode.BarcodeAdapter;
 import davoleo.barcodestock.barcode.BarcodeDAO;
 import davoleo.barcodestock.barcode.BarcodeDatabase;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,12 +38,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // TODO: 17/09/2019 Create Async Task to do this instead of doing it in the main thread
-        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode-db").allowMainThreadQueries().build();
+        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode-db").build();
+
+        List<Barcode> barcodeList = new ArrayList<>();
+        try {
+            barcodeList = new BarcodeAsyncTask(this).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Link database data to the listview using a custom Adapter
         ListView listView = findViewById(R.id.barcodeListView);
-        adapter = new BarcodeAdapter(this, getDatabaseDAO().getAll());
+        adapter = new BarcodeAdapter(this, barcodeList);
         listView.setAdapter(adapter);
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
@@ -82,9 +91,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
-    }
-
-    public static BarcodeDAO getDatabaseDAO() {
-        return database.barcodeDAO();
     }
 }

@@ -38,7 +38,7 @@ public class ActivityAddBarcode extends AppCompatActivity {
 
             //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
             Barcode barcode = new Barcode(code, title, desc, price);
-            MainActivity.getDatabaseDAO().insert(barcode);
+            MainActivity.database.barcodeDAO().insert(barcode);
 
             this.finish();
         }catch (NumberFormatException exception) {
