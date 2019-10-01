@@ -18,13 +18,13 @@ import java.util.List;
 @Dao
 public interface BarcodeDAO {
 
-    @Query("SELECT * FROM `barcode-list`")
+    @Query("SELECT * FROM barcode_list")
     List<Barcode> getAll();
 
-    @Query("SELECT * FROM `barcode-list` WHERE product_title IN (:name)")
+    @Query("SELECT * FROM barcode_list WHERE product_title IN (:name)")
     List<Barcode> loadAllByName(String name);
 
-    @Query("SELECT COUNT(*) FROM `barcode-list`")
+    @Query("SELECT COUNT(*) FROM barcode_list")
     int getBarcodesCount();
 
     @Insert

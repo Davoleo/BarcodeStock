@@ -9,17 +9,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.room.Room;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.barcode.BarcodeAdapter;
-import davoleo.barcodestock.barcode.BarcodeDAO;
 import davoleo.barcodestock.barcode.BarcodeDatabase;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode-db").build();
+        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
 
         List<Barcode> barcodeList = new ArrayList<>();
         try {
@@ -50,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
         //Link database data to the listview using a custom Adapter
         ListView listView = findViewById(R.id.barcodeListView);
         adapter = new BarcodeAdapter(this, barcodeList);
+        if (barcodeList.isEmpty()) {
+            System.out.println("VUOTOOOOOOOOOOOOOOOOOO");
+        }
         listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
@@ -66,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 //                        .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (hasFocus)
+            adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -91,5 +98,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    public void refreshListView(MenuItem item) {
+        adapter.notifyDataSetChanged();
     }
 }

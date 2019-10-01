@@ -6,7 +6,14 @@
           android:title="@string/action_search"
           android:icon="@drawable/search_icon"
           android:orderInCategory="1"
-          app:showAsAction="always"
+          app:showAsAction="ifRoom"
           app:actionViewClass="android.widget.SearchView"
+    />
+    <item android:id="@+id/action_refresh"
+          android:title="@string/action_refresh"
+          android:icon="@drawable/refresh_icon"
+          android:orderInCategory="1"
+          app:showAsAction="collapseActionView"
+          android:onClick="refreshListView"
     />
 </menu>

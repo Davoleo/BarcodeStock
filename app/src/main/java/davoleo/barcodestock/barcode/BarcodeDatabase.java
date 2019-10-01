@@ -1,11 +1,7 @@
 package davoleo.barcodestock.barcode;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 /*************************************************
  * Author: Davoleo

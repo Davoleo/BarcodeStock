@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@Entity(tableName = "barcode-list")
+@Entity(tableName = "barcode_list")
 public class Barcode {
 
     @PrimaryKey
