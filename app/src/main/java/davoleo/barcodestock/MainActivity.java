@@ -11,14 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
-import androidx.room.Room;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.barcode.BarcodeAdapter;
 import davoleo.barcodestock.barcode.BarcodeDatabase;
+import davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static BarcodeDatabase database;
 
     private BarcodeAdapter adapter;
+    private List<Barcode> barcodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,23 +35,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
+        barcodeList = BarcodeFileUtils.readAll(this);
 
-        List<Barcode> barcodeList = new ArrayList<>();
-        try {
-            barcodeList = new BarcodeAsyncTask(this).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        //database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
 
-        //Link database data to the listview using a custom Adapter
+//        try {
+//            barcodeList = new BarcodeAsyncTask(this).execute().get();
+//        } catch (ExecutionException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+        //Link data source to the listview using a custom Adapter
         ListView listView = findViewById(R.id.barcodeListView);
         adapter = new BarcodeAdapter(this, barcodeList);
         if (barcodeList.isEmpty()) {
             System.out.println("VUOTOOOOOOOOOOOOOOOOOO");
         }
         listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if (hasFocus)
-            adapter.notifyDataSetChanged();
     }
 
     @Override

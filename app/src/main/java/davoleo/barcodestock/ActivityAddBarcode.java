@@ -1,6 +1,5 @@
 package davoleo.barcodestock;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import davoleo.barcodestock.barcode.Barcode;
+import davoleo.barcodestock.util.BarcodeFileUtils;
 
 public class ActivityAddBarcode extends AppCompatActivity {
 
@@ -37,9 +37,14 @@ public class ActivityAddBarcode extends AppCompatActivity {
             float price = Float.parseFloat(txbPrice.toString());
 
             //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
-            Barcode barcode = new Barcode(code, title, desc, price);
-            MainActivity.database.barcodeDAO().insert(barcode);
-            this.finish();
+
+            if (!title.isEmpty() && !desc.isEmpty())
+            {
+                Barcode barcode = new Barcode(code, title, desc, price);
+                BarcodeFileUtils.writeToFile(this, barcode);
+                //MainActivity.database.barcodeDAO().insert(barcode);
+                this.finish();
+            }
 
         }catch (NumberFormatException exception) {
             Log.e(TAG, "addBarcode: Price or Code fields are not formatted correctly");
