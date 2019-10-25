@@ -103,4 +103,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
     }
+
+    public void onRefreshClick(MenuItem item) {
+        BarcodeFileUtils.clearBarcodes(this);
+        refreshListView();
+    }
 }

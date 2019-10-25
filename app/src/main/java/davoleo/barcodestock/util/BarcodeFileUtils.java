@@ -72,6 +72,16 @@ public class BarcodeFileUtils {
         return barcodeList;
     }
 
+    public static void clearBarcodes(Activity activity) {
+        try {
+            FileWriter writer = new FileWriter(buildFilePath(activity), false);
+            writer.write("");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void checkOrCreateFile(Activity activity) {
         String filePath = buildFilePath(activity);
         File file = new File(filePath);
