@@ -10,7 +10,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name=".ActivityAddBarcode"
+                android:name=".ActivityAddEditBarcode"
                 android:label="@string/title_activity_add_barcode"
                 android:parentActivityName=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">

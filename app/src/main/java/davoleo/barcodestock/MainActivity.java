@@ -16,7 +16,6 @@ import davoleo.barcodestock.barcode.BarcodeAdapter;
 import davoleo.barcodestock.barcode.BarcodeDatabase;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         barcodeList = BarcodeFileUtils.readAll(this);
 
         //database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
-
 //        try {
 //            barcodeList = new BarcodeAsyncTask(this).execute().get();
 //        } catch (ExecutionException | InterruptedException e) {
@@ -48,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
         //Link data source to the listview using a custom Adapter
         ListView listView = findViewById(R.id.barcodeListView);
         adapter = new BarcodeAdapter(this, barcodeList);
-        if (barcodeList.isEmpty()) {
-            System.out.println("VUOTOOOOOOOOOOOOOOOOOO");
-        }
         listView.setAdapter(adapter);
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), ActivityAddBarcode.class);
+                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class);
                 startActivity(intent);
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

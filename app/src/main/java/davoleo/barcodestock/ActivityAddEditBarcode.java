@@ -10,7 +10,7 @@ import android.widget.EditText;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
-public class ActivityAddBarcode extends AppCompatActivity {
+public class ActivityAddEditBarcode extends AppCompatActivity {
 
     private static final String TAG = "ActivityAddBarcode";
 
