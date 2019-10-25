@@ -14,5 +14,6 @@
           android:icon="@drawable/refresh_icon"
           android:orderInCategory="1"
           app:showAsAction="collapseActionView"
+          android:onClick="onRefreshClick"
     />
 </menu>
