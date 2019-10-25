@@ -24,7 +24,7 @@ public class BarcodeFileUtils {
         FileWriter writer = null;
 
         try {
-            writer = new FileWriter(buildFilePath(activity));
+            writer = new FileWriter(buildFilePath(activity), true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
             bufferedWriter.append(barcode.getCode() + "§").append(barcode.getTitle() + "§").append(barcode.getDescription() + "§").append(barcode.getPrice() + "\n");
 
