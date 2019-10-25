@@ -32,6 +32,10 @@ public class BarcodeAdapter extends BaseAdapter {
         inflater = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
     }
 
+    public List<Barcode> getData() {
+        return barcodeList;
+    }
+
     @Override
     public int getCount() {
         return barcodeList.size();
@@ -61,7 +65,7 @@ public class BarcodeAdapter extends BaseAdapter {
         textViewTitle.setText(selectedBarcode.getTitle());
         textViewDesc.setText(selectedBarcode.getDescription());
         textViewPrice.setText("€" + selectedBarcode.getPrice());
-        textViewCode.setText(Integer.toString(selectedBarcode.getCode()));
+        textViewCode.setText(Long.toString(selectedBarcode.getCode()));
 
         return itemView;
     }

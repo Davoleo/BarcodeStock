@@ -19,7 +19,7 @@ public class Barcode {
     public int uid;
 
     @ColumnInfo(name = "barcode")
-    private int code;
+    private long code;
 
     @ColumnInfo(name = "product_title")
     private String title;
@@ -30,7 +30,7 @@ public class Barcode {
     @ColumnInfo(name = "product_price")
     private float price;
 
-    public Barcode(int code, String title, String description, float price)
+    public Barcode(long code, String title, String description, float price)
     {
         this.code = code;
         this.title = title;
@@ -38,7 +38,7 @@ public class Barcode {
         this.price = price;
     }
 
-    public int getCode() {
+    public long getCode() {
         return code;
     }
 

@@ -33,7 +33,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         String desc = ((EditText) findViewById(R.id.txbDesc)).getText().toString();
 
         try {
-            int code = Integer.parseInt(txbCode.toString());
+            long code = Long.parseLong(txbCode.toString());
             float price = Float.parseFloat(txbPrice.toString());
 
             //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
@@ -47,6 +47,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             }
 
         }catch (NumberFormatException exception) {
+            exception.printStackTrace();
             Log.e(TAG, "addBarcode: Price or Code fields are not formatted correctly");
         }
 

@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        if (hasFocus)
+        {
+            refreshListView();
+        }
     }
 
     @Override
@@ -93,7 +97,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void refreshListView(MenuItem item) {
+    public void refreshListView (){
+        List<Barcode> newList = BarcodeFileUtils.readAll(this);
+        adapter.getData().clear();
+        adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
     }
 }
