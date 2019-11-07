@@ -58,7 +58,7 @@ public class BarcodeFileUtils {
 
             while ((currentLine = bufferedReader.readLine()) != null) {
                 barcodeInfo = currentLine.split("§");
-                Barcode barcode = new Barcode(Integer.parseInt(barcodeInfo[0]), barcodeInfo[1], barcodeInfo[2], Float.parseFloat(barcodeInfo[3]));
+                Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], barcodeInfo[2], Float.parseFloat(barcodeInfo[3]));
                 barcodeList.add(barcode);
             }
 

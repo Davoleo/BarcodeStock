@@ -128,7 +128,10 @@
                     android:id="@+id/txbCode"
                     android:layout_marginTop="12dp"
                     android:layout_marginStart="28dp"
-                    android:importantForAutofill="no" tools:targetApi="o"/>
+                    android:importantForAutofill="no"
+                    tools:targetApi="o"
+                    android:maxLength="13"
+            />
         </LinearLayout>
         <Button
                 android:text="@string/btn_add"
