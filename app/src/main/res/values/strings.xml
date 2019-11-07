@@ -9,6 +9,9 @@
     <string name="label_barcode_code">Bar Code</string>
     <string name="btn_add">Add</string>
     <string name="action_search">Search</string>
-    <string name="action_refresh">Refresh</string>
+    <string name="action_clear">Clear</string>
     <string name="barcode_list_filename">BarcodeList</string>
+    <string name="message_clear_barcodes">Are you sure you want to remove all barcodes from the list?</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_ok">OK!</string>
 </resources>

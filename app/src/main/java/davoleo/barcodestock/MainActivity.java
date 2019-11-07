@@ -1,8 +1,11 @@
 package davoleo.barcodestock;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
+
+    private AlertDialog clearBarcodesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,6 +67,24 @@ public class MainActivity extends AppCompatActivity {
                 //                        .setAction("Action", null).show();
             }
         });
+
+        //Clear Barcodes AlertDialog -------------------------------
+        final Activity mainActivity = this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.message_clear_barcodes).setCancelable(true);
+        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                BarcodeFileUtils.clearBarcodes(mainActivity);
+            }
+        });
+        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        clearBarcodesDialog = builder.create();
     }
 
     @Override
@@ -104,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void onRefreshClick(MenuItem item) {
-        BarcodeFileUtils.clearBarcodes(this);
+    public void clearBarcodeList(MenuItem item) {
         refreshListView();
+        clearBarcodesDialog.show();
     }
 }

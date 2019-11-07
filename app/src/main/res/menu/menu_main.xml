@@ -10,10 +10,9 @@
           app:actionViewClass="android.widget.SearchView"
     />
     <item android:id="@+id/action_refresh"
-          android:title="@string/action_refresh"
-          android:icon="@drawable/refresh_icon"
+          android:title="@string/action_clear"
           android:orderInCategory="1"
-          app:showAsAction="collapseActionView"
-          android:onClick="onRefreshClick"
+          app:showAsAction="never"
+          android:onClick="clearBarcodeList"
     />
 </menu>
