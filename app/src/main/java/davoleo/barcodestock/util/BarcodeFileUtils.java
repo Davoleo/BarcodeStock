@@ -82,6 +82,8 @@ public class BarcodeFileUtils {
         }
     }
 
+    // TODO: 18/11/2019 Specific Barcode Removal Method
+
     private static void checkOrCreateFile(Activity activity) {
         String filePath = buildFilePath(activity);
         File file = new File(filePath);
