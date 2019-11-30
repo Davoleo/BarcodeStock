@@ -2,10 +2,8 @@ package davoleo.barcodestock;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.widget.TabHost;
 import android.widget.Toast;
 import davoleo.barcodestock.barcode.Barcode;
-import davoleo.barcodestock.barcode.BarcodeDAO;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -28,8 +26,9 @@ public final class BarcodeAsyncTask extends AsyncTask<Void, Void, List<Barcode>>
 
     @Override
     protected List<Barcode> doInBackground(Void... voids) {
-        BarcodeDAO dao = MainActivity.database.barcodeDAO();
-        return dao.getAll();
+        //BarcodeDAO dao = MainActivity.database.barcodeDAO();
+        //return dao.getAll();
+        return null;
     }
 
     @Override

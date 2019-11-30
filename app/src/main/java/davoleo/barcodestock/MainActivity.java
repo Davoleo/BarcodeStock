@@ -1,5 +1,6 @@
 package davoleo.barcodestock;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import davoleo.barcodestock.barcode.BarcodeAdapter;
 import davoleo.barcodestock.util.AlertDialogs;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (hasFocus)
         {
-            refreshListView();
+            refreshListView(BarcodeFileUtils.readAll(this));
         }
     }
 
@@ -84,14 +86,38 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
+        final List<Barcode> queryResult = new ArrayList<>();
+        final Activity activity = this;
 
+        searchView.clearFocus();
+        searchView.onActionViewCollapsed();
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchView.clearFocus();
+                searchView.onActionViewCollapsed();
+                refreshListView(BarcodeFileUtils.readAll(activity));
+                return true;
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                //TODO Filter Barcode List
-                return false;
+                queryResult.clear();
+
+                for (Barcode barcode : barcodeList) {
+                    if (barcode.getTitle().contains(s))
+                        queryResult.add(barcode);
+                    if (barcode.getDescription().contains(s))
+                        queryResult.add(barcode);
+                    if (String.valueOf(barcode.getCode()).contains(s))
+                        queryResult.add(barcode);
+                }
+
+                refreshListView(queryResult);
+                return true;
             }
 
             @Override
@@ -103,15 +129,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void refreshListView (){
-        List<Barcode> newList = BarcodeFileUtils.readAll(this);
+    public void refreshListView (List<Barcode> newList){
         adapter.getData().clear();
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
     }
 
     public void clearBarcodeList(MenuItem item) {
-        refreshListView();
+        refreshListView(BarcodeFileUtils.readAll(this));
         dialogs.CLEAR_DIALOG.show();
     }
 }
