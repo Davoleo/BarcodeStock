@@ -1,10 +1,5 @@
 package davoleo.barcodestock.barcode;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-
 import java.util.List;
 
 /*************************************************
@@ -15,22 +10,22 @@ import java.util.List;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-@Dao
+//@Dao
 public interface BarcodeDAO {
 
-    @Query("SELECT * FROM barcode_list")
+//    @Query("SELECT * FROM barcode_list")
     List<Barcode> getAll();
 
-    @Query("SELECT * FROM barcode_list WHERE product_title IN (:name)")
+ //   @Query("SELECT * FROM barcode_list WHERE product_title IN (:name)")
     List<Barcode> loadAllByName(String name);
 
-    @Query("SELECT COUNT(*) FROM barcode_list")
+//    @Query("SELECT COUNT(*) FROM barcode_list")
     int getBarcodesCount();
 
-    @Insert
+//    @Insert
     void insert(Barcode barcode);
 
-    @Delete
+//    @Delete
     void delete(Barcode barcode);
 
 }

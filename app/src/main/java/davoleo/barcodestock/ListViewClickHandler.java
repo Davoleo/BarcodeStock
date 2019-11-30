@@ -1,6 +1,7 @@
 package davoleo.barcodestock;
 
 import android.view.View;
+import android.widget.AdapterView;
 
 /*************************************************
  * Author: Davoleo
@@ -11,15 +12,16 @@ import android.view.View;
  **************************************************/
 
 // TODO: 18/11/2019 Implement this
-public class ListViewClickHandler implements View.OnClickListener, View.OnLongClickListener {
+public class ListViewClickHandler implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     @Override
-    public void onClick(View v) {
-
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("ITEM CLICKED");
     }
 
     @Override
-    public boolean onLongClick(View v) {
-        return false;
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("ITEM LONG CLICKED");
+        return true;
     }
 }

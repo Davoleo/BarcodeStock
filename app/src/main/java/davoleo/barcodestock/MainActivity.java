@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.barcode.BarcodeAdapter;
-import davoleo.barcodestock.barcode.BarcodeDatabase;
 import davoleo.barcodestock.util.AlertDialogs;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
@@ -22,7 +21,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    public static BarcodeDatabase database;
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new BarcodeAdapter(this, barcodeList);
         listView.setAdapter(adapter);
         ListViewClickHandler handler = new ListViewClickHandler();
-        listView.setOnClickListener(handler);
+        listView.setOnItemClickListener(handler);
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
@@ -72,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
         if (hasFocus)
         {
             refreshListView();
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = ((SearchView) searchItem.getActionView());
+        final SearchView searchView = ((SearchView) searchItem.getActionView());
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
