@@ -1,7 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="davoleo.barcodestock.MainActivity">
+      tools:context="davoleo.barcodestock.ui.MainActivity">
+
     <item android:id="@+id/action_search"
           android:title="@string/action_search"
           android:icon="@drawable/search_icon"
@@ -9,7 +10,16 @@
           app:showAsAction="ifRoom"
           app:actionViewClass="android.widget.SearchView"
     />
-    <item android:id="@+id/action_refresh"
+
+    <item android:id="@+id/action_sort"
+          android:title="@string/action_sort"
+          android:icon="@drawable/ic_sort_24px"
+          android:orderInCategory="1"
+          app:showAsAction="ifRoom"
+          android:onClick="sortBarcodeList"
+    />
+
+    <item android:id="@+id/action_clear"
           android:title="@string/action_clear"
           android:orderInCategory="1"
           app:showAsAction="never"

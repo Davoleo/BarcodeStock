@@ -1,4 +1,4 @@
-package davoleo.barcodestock;
+package davoleo.barcodestock.util;
 
 import android.app.Activity;
 import android.os.AsyncTask;

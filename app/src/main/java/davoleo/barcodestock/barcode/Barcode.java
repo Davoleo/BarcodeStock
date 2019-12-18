@@ -8,7 +8,7 @@ package davoleo.barcodestock.barcode;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class Barcode {
+public class Barcode implements Comparable<Barcode> {
 
     public int uid;
     private long code;
@@ -38,5 +38,10 @@ public class Barcode {
 
     public float getPrice() {
         return price;
+    }
+
+    @Override
+    public int compareTo(Barcode o) {
+        return this.getTitle().compareToIgnoreCase(o.getTitle());
     }
 }

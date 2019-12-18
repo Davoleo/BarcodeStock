@@ -1,4 +1,4 @@
-package davoleo.barcodestock;
+package davoleo.barcodestock.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import davoleo.barcodestock.R;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 

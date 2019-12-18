@@ -1,4 +1,4 @@
-package davoleo.barcodestock;
+package davoleo.barcodestock.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,12 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
+import davoleo.barcodestock.R;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.barcode.BarcodeAdapter;
-import davoleo.barcodestock.util.AlertDialogs;
+import davoleo.barcodestock.ui.dialog.AlertDialogs;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -138,5 +141,13 @@ public class MainActivity extends AppCompatActivity {
     public void clearBarcodeList(MenuItem item) {
         refreshListView(BarcodeFileUtils.readAll(this));
         dialogs.CLEAR_DIALOG.show();
+    }
+
+    public void sortBarcodeList(MenuItem item) {
+        Barcode[] arr;
+        arr = barcodeList.toArray(new Barcode[0]);
+        Arrays.sort(arr);
+        refreshListView(Arrays.asList(arr));
+        Toast.makeText(getApplicationContext(), "Barcodes have been sorted!", Toast.LENGTH_LONG).show();
     }
 }
