@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="barcode_fields">
+        <item>@string/label_barcode_code</item>
+        <item>@string/label_barcode_title</item>
+        <item>@string/label_barcode_desc</item>
+        <item>@string/label_barcode_price</item>
+    </array>
+</resources>

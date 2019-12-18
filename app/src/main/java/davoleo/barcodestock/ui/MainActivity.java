@@ -143,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
         dialogs.CLEAR_DIALOG.show();
     }
 
-    public void sortBarcodeList(MenuItem item) {
+
+
+    public void sortBarcodeList(String field) {
         Barcode[] arr;
         arr = barcodeList.toArray(new Barcode[0]);
         Arrays.sort(arr);

@@ -44,4 +44,12 @@ public class Barcode implements Comparable<Barcode> {
     public int compareTo(Barcode o) {
         return this.getTitle().compareToIgnoreCase(o.getTitle());
     }
+
+    public enum BarcodeFields {
+        BARCODE,
+        TITLE,
+        DESCRIPTION,
+        PRICE
+
+    }
 }

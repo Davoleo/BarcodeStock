@@ -13,6 +13,7 @@
     <string name="barcode_list_filename">BarcodeList</string>
     <string name="message_clear_barcodes">Are you sure you want to remove all barcodes from the list?</string>
     <string name="button_cancel">Cancel</string>
-    <string name="button_ok">OK!</string>
+    <string name="ok">OK!</string>
     <string name="action_sort">Sort</string>
+    <string name="dialog_sort_title">Sort By</string>
 </resources>

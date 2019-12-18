@@ -29,7 +29,7 @@ public class AlertDialogs {
 
     private AlertDialog buildClearBarcodesDialog() {
         builder.setMessage(R.string.message_clear_barcodes).setCancelable(true);
-        builder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 BarcodeFileUtils.clearBarcodes(activity);
