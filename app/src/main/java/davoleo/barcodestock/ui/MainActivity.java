@@ -1,6 +1,5 @@
 package davoleo.barcodestock.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,19 +16,22 @@ import davoleo.barcodestock.R;
 import davoleo.barcodestock.barcode.Barcode;
 import davoleo.barcodestock.barcode.BarcodeAdapter;
 import davoleo.barcodestock.ui.dialog.AlertDialogs;
+import davoleo.barcodestock.ui.dialog.SortingDialogFragment;
 import davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SortingDialogFragment.SortingDialogListener {
 
     private static final String TAG = "MainActivity";
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
+
+    private boolean markedForCleanRefresh = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,15 +77,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        if (hasFocus)
-        {
-            refreshListView(BarcodeFileUtils.readAll(this));
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -91,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
+        final List<Barcode> cachedList = barcodeList;
         final List<Barcode> queryResult = new ArrayList<>();
-        final Activity activity = this;
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
@@ -101,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onClose() {
                 searchView.clearFocus();
                 searchView.onActionViewCollapsed();
-                refreshListView(BarcodeFileUtils.readAll(activity));
+                refreshListView(cachedList);
                 return true;
             }
         });
@@ -136,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.getData().clear();
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
+        System.out.println("CALLED  |||||||||");
     }
 
     public void clearBarcodeList(MenuItem item) {
@@ -143,13 +137,20 @@ public class MainActivity extends AppCompatActivity {
         dialogs.CLEAR_DIALOG.show();
     }
 
+    //Sorting methods ----------------------------------------------
+    public void showSortingDialog(MenuItem item) {
+        SortingDialogFragment dialog = new SortingDialogFragment();
+        dialog.show(getSupportFragmentManager(), "sorting");
+    }
 
-
-    public void sortBarcodeList(String field) {
+    @Override
+    public void onDialogClick(int sortingChoice) {
+        Barcode.sortingMethod = Barcode.BarcodeFields.values()[sortingChoice];
         Barcode[] arr;
         arr = barcodeList.toArray(new Barcode[0]);
         Arrays.sort(arr);
         refreshListView(Arrays.asList(arr));
-        Toast.makeText(getApplicationContext(), "Barcodes have been sorted!", Toast.LENGTH_LONG).show();
+
+        Toast.makeText(getApplicationContext(), "Barcodes have been sorted!", Toast.LENGTH_SHORT).show();
     }
 }

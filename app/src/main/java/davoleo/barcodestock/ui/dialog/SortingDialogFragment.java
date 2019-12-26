@@ -17,14 +17,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import davoleo.barcodestock.R;
-import davoleo.barcodestock.barcode.Barcode;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SortingDialogFragment extends DialogFragment {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final StringBuilder selectedChoice = new StringBuilder();
+        final AtomicInteger selectedChoice = new AtomicInteger(0);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.dialog_sort_title);
@@ -32,20 +33,18 @@ public class SortingDialogFragment extends DialogFragment {
         builder.setSingleChoiceItems(R.array.barcode_fields, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                System.out.println("L'ID CATTURATO è " + which);
-                selectedChoice.append(Barcode.BarcodeFields.values()[which].name().toLowerCase());
+                selectedChoice.set(which);
             }
         });
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                listener.onDialogClick(selectedChoice.get());
             }
         });
 
-        AlertDialog dialog = builder.create();
-        return dialog;
+        return builder.create();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class SortingDialogFragment extends DialogFragment {
 
     public interface SortingDialogListener {
 
-        void onDialogClick(String sortingChoice);
+        void onDialogClick(int sortingChoice);
 
     }
 }

@@ -16,6 +16,7 @@
           android:icon="@drawable/ic_sort_24px"
           android:orderInCategory="1"
           app:showAsAction="ifRoom"
+          android:onClick="showSortingDialog"
     />
 
     <item android:id="@+id/action_clear"

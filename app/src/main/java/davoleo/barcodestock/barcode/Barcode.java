@@ -10,11 +10,12 @@ package davoleo.barcodestock.barcode;
 
 public class Barcode implements Comparable<Barcode> {
 
-    public int uid;
     private long code;
     private String title;
     private String description;
     private float price;
+
+    public static BarcodeFields sortingMethod = BarcodeFields.TITLE;
 
     public Barcode(long code, String title, String description, float price)
     {
@@ -42,7 +43,17 @@ public class Barcode implements Comparable<Barcode> {
 
     @Override
     public int compareTo(Barcode o) {
-        return this.getTitle().compareToIgnoreCase(o.getTitle());
+        switch (sortingMethod) {
+            case BARCODE:
+                return Long.compare(this.getCode(), o.getCode());
+            case DESCRIPTION:
+                return this.getDescription().compareToIgnoreCase(o.getDescription());
+            case PRICE:
+                return Float.compare(this.getPrice(), o.getPrice());
+            case TITLE:
+            default:
+                return this.getTitle().compareToIgnoreCase(o.getTitle());
+        }
     }
 
     public enum BarcodeFields {
@@ -50,6 +61,5 @@ public class Barcode implements Comparable<Barcode> {
         TITLE,
         DESCRIPTION,
         PRICE
-
     }
 }
