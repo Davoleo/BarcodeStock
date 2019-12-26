@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="davoleo.barcodestock">
+          xmlns:tools="http://schemas.android.com/tools" package="io.github.davoleo.barcodestock">
 
     <application
             android:allowBackup="true"
@@ -16,7 +16,7 @@
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="davoleo.barcodestock.ui.MainActivity"/>
+                    android:value="io.github.davoleo.barcodestock.ui.MainActivity"/>
         </activity>
         <activity
                 android:name=".ui.MainActivity"

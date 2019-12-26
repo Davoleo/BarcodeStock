@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "davoleo.barcodestock"
+        applicationId "io.github.davoleo.barcodestock"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
