@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" android:orientation="horizontal"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingTop="5dp" android:paddingLeft="10dp" android:paddingRight="10dp"
+                android:paddingBottom="5dp">
 
     <TextView
             android:textSize="20sp"
@@ -12,7 +14,7 @@
             android:id="@+id/barcodeTitle"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:maxEms="9"
-    />
+            android:textStyle="bold"/>
 
     <TextView
             android:textSize="14sp"
@@ -40,8 +42,7 @@
             android:id="@+id/barcode"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:layout_alignTop="@+id/barcodeTitle"
-            android:layout_marginTop="8dp"
             android:textStyle="bold"
-            android:textAlignment="textEnd" android:layout_alignParentEnd="true" android:layout_marginEnd="10dp"/>
+            android:textAlignment="textEnd" android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>
