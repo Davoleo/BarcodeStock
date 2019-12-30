@@ -16,4 +16,6 @@
     <string name="ok">OK!</string>
     <string name="action_sort">Sort</string>
     <string name="dialog_sort_title">Sort By</string>
+    <string name="action_remove_barcode">Remove Barcode</string>
+    <string name="action_edit_barcode">Edit Barcode</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/action_remove_barcode" android:id="@+id/context_remove_barcode" />
+    <item android:title="@string/action_edit_barcode" android:id="@+id/context_edit_barcode" />
+
+</menu>

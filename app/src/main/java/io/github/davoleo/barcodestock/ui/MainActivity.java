@@ -2,13 +2,12 @@ package io.github.davoleo.barcodestock.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -30,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
-
-    private boolean markedForCleanRefresh = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         ListViewClickHandler handler = new ListViewClickHandler();
         listView.setOnItemClickListener(handler);
 
+        //Register for Floating Contextual Menu
+        registerForContextMenu(listView);
+
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             public void onClick(View view)
             {
                 Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //                        .setAction("Action", null).show();
@@ -74,6 +74,37 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         //Build Alert Dialogs
         dialogs = new AlertDialogs(this);
+    }
+
+    //Get the added barcode back
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            refreshListView(BarcodeFileUtils.readAll(this));
+        }
+    }
+
+    //Build List Context Menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_contextual, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.context_edit_barcode) {
+            return true;
+        } else if (id == R.id.context_remove_barcode) {
+            return true;
+        } else
+            return super.onContextItemSelected(item);
     }
 
     @Override

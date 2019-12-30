@@ -22,7 +22,6 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         setContentView(R.layout.activity_add_barcode);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
     }
 
     public void addBarcode(View view)
@@ -37,13 +36,12 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             long code = Long.parseLong(txbCode.toString());
             float price = Float.parseFloat(txbPrice.toString());
 
-            //System.out.println(title + " | " + desc + " | " + code + " | " + quantity + " | " + price);
-
             if (!title.isEmpty() && !desc.isEmpty())
             {
                 Barcode barcode = new Barcode(code, title, desc, price);
                 BarcodeFileUtils.writeToFile(this, barcode);
-                //MainActivity.database.barcodeDAO().insert(barcode);
+
+                setResult(RESULT_OK);
                 this.finish();
             }
 

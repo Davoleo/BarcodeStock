@@ -1,5 +1,7 @@
 package io.github.davoleo.barcodestock.barcode;
 
+import android.support.annotation.NonNull;
+
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 29/03/2019 / 16:19
@@ -54,6 +56,12 @@ public class Barcode implements Comparable<Barcode> {
             default:
                 return this.getTitle().compareToIgnoreCase(o.getTitle());
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Barcode{ Title: " + title + " | Description: " + description + " | Code: " + code + " | Price: " + price + "}";
     }
 
     public enum BarcodeFields {
