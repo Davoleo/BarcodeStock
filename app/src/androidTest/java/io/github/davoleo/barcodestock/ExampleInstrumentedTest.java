@@ -1,4 +1,4 @@
-package davoleo.barcodestock;
+package io.github.davoleo.barcodestock;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("davoleo.barcodestock", appContext.getPackageName());
+        assertEquals("io.github.davoleo.barcodestock", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package davoleo.barcodestock.ui;
+package io.github.davoleo.barcodestock.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +12,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
-import davoleo.barcodestock.R;
-import davoleo.barcodestock.barcode.Barcode;
-import davoleo.barcodestock.barcode.BarcodeAdapter;
-import davoleo.barcodestock.ui.dialog.AlertDialogs;
-import davoleo.barcodestock.ui.dialog.SortingDialogFragment;
-import davoleo.barcodestock.util.BarcodeFileUtils;
+import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.barcode.Barcode;
+import io.github.davoleo.barcodestock.barcode.BarcodeAdapter;
+import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
+import io.github.davoleo.barcodestock.ui.dialog.SortingDialogFragment;
+import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

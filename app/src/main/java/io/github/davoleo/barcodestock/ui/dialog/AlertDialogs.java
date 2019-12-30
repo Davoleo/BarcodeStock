@@ -1,10 +1,10 @@
-package davoleo.barcodestock.ui.dialog;
+package io.github.davoleo.barcodestock.ui.dialog;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import davoleo.barcodestock.R;
-import davoleo.barcodestock.util.BarcodeFileUtils;
+import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 /*************************************************
  * Author: Davoleo

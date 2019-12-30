@@ -1,9 +1,9 @@
-package davoleo.barcodestock.util;
+package io.github.davoleo.barcodestock.util;
 
 import android.app.Activity;
 import android.widget.Toast;
-import davoleo.barcodestock.R;
-import davoleo.barcodestock.barcode.Barcode;
+import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.barcode.Barcode;
 
 import java.io.*;
 import java.util.ArrayList;

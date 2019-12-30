@@ -6,7 +6,7 @@
  * Copyright - © - Davoleo - 2019
  * ----------------------------------- */
 
-package davoleo.barcodestock.ui.dialog;
+package io.github.davoleo.barcodestock.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.R;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

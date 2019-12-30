@@ -1,4 +1,4 @@
-package davoleo.barcodestock.barcode;
+package io.github.davoleo.barcodestock.barcode;
 
 /*************************************************
  * Author: Davoleo

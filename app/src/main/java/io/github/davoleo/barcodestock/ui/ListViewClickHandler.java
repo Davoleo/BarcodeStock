@@ -1,4 +1,4 @@
-package davoleo.barcodestock.ui;
+package io.github.davoleo.barcodestock.ui;
 
 import android.view.View;
 import android.widget.AdapterView;

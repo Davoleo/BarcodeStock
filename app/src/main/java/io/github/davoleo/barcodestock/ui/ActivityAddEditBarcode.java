@@ -1,4 +1,4 @@
-package davoleo.barcodestock.ui;
+package io.github.davoleo.barcodestock.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +7,9 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import davoleo.barcodestock.R;
-import davoleo.barcodestock.barcode.Barcode;
-import davoleo.barcodestock.util.BarcodeFileUtils;
+import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.barcode.Barcode;
+import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 public class ActivityAddEditBarcode extends AppCompatActivity {
 

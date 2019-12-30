@@ -1,4 +1,4 @@
-package davoleo.barcodestock.barcode;
+package io.github.davoleo.barcodestock.barcode;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.R;
 
 import java.util.List;
 

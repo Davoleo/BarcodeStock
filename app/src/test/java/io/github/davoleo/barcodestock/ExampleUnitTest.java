@@ -1,4 +1,4 @@
-package davoleo.barcodestock;
+package io.github.davoleo.barcodestock;
 
 import org.junit.Test;
 
