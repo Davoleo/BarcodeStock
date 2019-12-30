@@ -19,10 +19,17 @@
           android:onClick="showSortingDialog"
     />
 
-    <item android:id="@+id/action_clear"
-          android:title="@string/action_clear"
+    <item android:id="@+id/action_refresh"
+          android:title="@string/action_refresh"
           android:orderInCategory="1"
           app:showAsAction="never"
-          android:onClick="clearBarcodeList"
+          android:onClick="refreshClearBarcodeList"
+    />
+
+    <item android:id="@+id/action_clear"
+          android:title="@string/action_clear"
+          android:orderInCategory="2"
+          app:showAsAction="never"
+          android:onClick="refreshClearBarcodeList"
     />
 </menu>

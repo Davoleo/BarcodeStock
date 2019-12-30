@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -48,11 +49,17 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 //        }
 
         //Link data source to the listview using a custom Adapter
-        ListView listView = findViewById(R.id.barcodeListView);
+        final ListView listView = findViewById(R.id.barcodeListView);
         adapter = new BarcodeAdapter(this, barcodeList);
         listView.setAdapter(adapter);
-        ListViewClickHandler handler = new ListViewClickHandler();
-        listView.setOnItemClickListener(handler);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                listView.showContextMenu();
+                return true;
+            }
+        });
 
         //Register for Floating Contextual Menu
         registerForContextMenu(listView);
@@ -163,9 +170,11 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         System.out.println("CALLED  |||||||||");
     }
 
-    public void clearBarcodeList(MenuItem item) {
+    public void refreshClearBarcodeList(MenuItem item) {
         refreshListView(BarcodeFileUtils.readAll(this));
-        dialogs.CLEAR_DIALOG.show();
+
+        if (item.getItemId() == R.id.action_clear)
+            dialogs.CLEAR_DIALOG.show();
     }
 
     //Sorting methods ----------------------------------------------
