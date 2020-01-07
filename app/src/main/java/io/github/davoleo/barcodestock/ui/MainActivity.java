@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
     private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
 
+    private int selectedItemId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemLongClick: POSITION VALUE " + position);
+                selectedItemId = position;
                 listView.showContextMenu();
                 return true;
             }
@@ -104,11 +108,12 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.context_edit_barcode) {
+        if (item.getItemId() == R.id.context_edit_barcode) {
             return true;
-        } else if (id == R.id.context_remove_barcode) {
+        } else if (item.getItemId() == R.id.context_remove_barcode) {
+            adapter.remove(((Barcode) adapter.getItem(selectedItemId)));
+            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
             return true;
         } else
             return super.onContextItemSelected(item);
@@ -163,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         return true;
     }
 
+    //UI Refresh and Clear -----------------------------------------
     public void refreshListView (List<Barcode> newList){
         adapter.getData().clear();
         adapter.getData().addAll(newList);

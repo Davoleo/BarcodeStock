@@ -43,11 +43,4 @@ public class AlertDialogs {
         });
         return builder.create();
     }
-
-    // TODO: 18/11/2019 Finish Up this AlertDialog
-    private AlertDialog buildDeleteBarcodesDialog() {
-        builder.setMessage(R.string.message_clear_barcodes).setCancelable(true);
-        return builder.create();
-    }
-
 }

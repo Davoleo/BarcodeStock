@@ -36,6 +36,11 @@ public class BarcodeAdapter extends BaseAdapter {
         return barcodeList;
     }
 
+    public void remove(Barcode barcode) {
+        barcodeList.remove(barcode);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return barcodeList.size();

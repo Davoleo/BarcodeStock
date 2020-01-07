@@ -21,16 +21,45 @@ public class BarcodeFileUtils {
 
     public static void writeToFile(Activity activity, Barcode barcode) {
 
-        FileWriter writer = null;
+        FileWriter writer;
 
         try {
             writer = new FileWriter(buildFilePath(activity), true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.append(barcode.getCode() + "§").append(barcode.getTitle() + "§").append(barcode.getDescription() + "§").append(barcode.getPrice() + "\n");
+            bufferedWriter
+                    .append(String.valueOf(barcode.getCode())).append("§")
+                    .append(barcode.getTitle()).append("§")
+                    .append(barcode.getDescription()).append("§")
+                    .append(String.valueOf(barcode.getPrice())).append("\n");
 
             bufferedWriter.close();
             writer.close();
             Toast.makeText(activity.getApplicationContext(), "Successfully Registered a new Barcode!", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void overwriteListToFile(Activity activity, List<Barcode> barcodeList) {
+
+        FileWriter writer;
+
+        try {
+            writer = new FileWriter(buildFilePath(activity), false);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+            for (Barcode barcode : barcodeList) {
+                bufferedWriter
+                        .append(String.valueOf(barcode.getCode())).append("§")
+                        .append(barcode.getTitle()).append("§")
+                        .append(barcode.getDescription()).append("§")
+                        .append(String.valueOf(barcode.getPrice())).append("\n");
+            }
+
+            bufferedWriter.close();
+            writer.close();
+            Toast.makeText(activity.getApplicationContext(), "Successfully overwrote new Barcode List!", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,8 +110,6 @@ public class BarcodeFileUtils {
             e.printStackTrace();
         }
     }
-
-    // TODO: 18/11/2019 Specific Barcode Removal Method
 
     private static void checkOrCreateFile(Activity activity) {
         String filePath = buildFilePath(activity);
