@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.ui.MainActivity;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 /*************************************************
@@ -33,6 +34,7 @@ public class AlertDialogs {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 BarcodeFileUtils.clearBarcodes(activity);
+                ((MainActivity) activity).refreshListView(BarcodeFileUtils.readAll(activity));
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
