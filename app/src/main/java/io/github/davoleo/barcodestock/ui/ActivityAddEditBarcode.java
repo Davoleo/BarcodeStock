@@ -29,14 +29,14 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
 
         editMode = getIntent().getBooleanExtra("edit", false);
 
-        Bundle barcodeBundle = getIntent().getBundleExtra("barcode");
-        selectedBarcode = new Barcode(
-                barcodeBundle.getLong("code"),
-                barcodeBundle.getString("title"),
-                barcodeBundle.getString("desc"),
-                barcodeBundle.getFloat("price"));
-
         if (editMode) {
+            Bundle barcodeBundle = getIntent().getBundleExtra("barcode");
+            selectedBarcode = new Barcode(
+                    barcodeBundle.getLong("code"),
+                    barcodeBundle.getString("title"),
+                    barcodeBundle.getString("desc"),
+                    barcodeBundle.getFloat("price"));
+
             setTitle(R.string.title_activity_edit_barcode);
             ((Button) findViewById(R.id.button)).setText(R.string.btn_save);
 

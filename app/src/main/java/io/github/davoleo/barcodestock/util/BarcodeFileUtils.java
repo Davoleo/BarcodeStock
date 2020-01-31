@@ -34,7 +34,7 @@ public class BarcodeFileUtils {
 
             bufferedWriter.close();
             writer.close();
-            Toast.makeText(activity.getApplicationContext(), "Successfully Registered a new Barcode!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity.getApplicationContext(), "Successfully Registered a new Barcode!", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class BarcodeFileUtils {
 
             bufferedWriter.close();
             writer.close();
-            Toast.makeText(activity.getApplicationContext(), "Successfully overwrote new Barcode List!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity.getApplicationContext(), "Successfully overwrote new Barcode List!", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
