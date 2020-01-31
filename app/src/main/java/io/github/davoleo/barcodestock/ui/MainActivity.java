@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class);
+                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false);
                 startActivityForResult(intent, 1);
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -108,11 +108,22 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Barcode barcode = ((Barcode) adapter.getItem(selectedItemId));
 
         if (item.getItemId() == R.id.context_edit_barcode) {
+            Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", true);
+            Bundle bundle = new Bundle();
+            bundle.putFloat("price", barcode.getPrice());
+            bundle.putString("title", barcode.getTitle());
+            bundle.putString("desc", barcode.getDescription());
+            bundle.putLong("code", barcode.getCode());
+            intent.putExtra("barcode", bundle);
+            adapter.remove(barcode);
+            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
+            startActivityForResult(intent, 1);
             return true;
         } else if (item.getItemId() == R.id.context_remove_barcode) {
-            adapter.remove(((Barcode) adapter.getItem(selectedItemId)));
+            adapter.remove(barcode);
             BarcodeFileUtils.overwriteListToFile(this, barcodeList);
             return true;
         } else
