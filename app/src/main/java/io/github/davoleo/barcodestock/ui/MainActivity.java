@@ -143,36 +143,29 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                searchView.clearFocus();
-                searchView.onActionViewCollapsed();
-                refreshListView(cachedList);
-                return true;
-            }
-        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            final Barcode[] cachedBarcodes = barcodeList.toArray(new Barcode[]{});
+
+            @Override
+            public boolean onQueryTextChange(String s) {
                 queryResult.clear();
 
-                for (Barcode barcode : barcodeList) {
-                    if (barcode.getTitle().contains(s))
-                        queryResult.add(barcode);
-                    if (barcode.getDescription().contains(s))
-                        queryResult.add(barcode);
-                    if (String.valueOf(barcode.getCode()).contains(s))
-                        queryResult.add(barcode);
+                for (Barcode barcode : cachedBarcodes) {
+                    if (barcode.getTitle().contains(s) || barcode.getDescription().contains(s) || String.valueOf(barcode.getCode()).contains(s)) {
+                        if (!queryResult.contains(barcode)) {
+                            queryResult.add(barcode);
+                        }
+                    }
                 }
 
                 refreshListView(queryResult);
                 return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
             }
         });
 
@@ -184,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         adapter.getData().clear();
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
-        System.out.println("CALLED  |||||||||");
+        Log.d(TAG, "refreshListView: |!|!|!|!|!|  CALLED  |!|!|!|!|!|");
     }
 
     public void refreshClearBarcodeList(MenuItem item) {
