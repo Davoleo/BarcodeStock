@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
-        final List<Barcode> cachedList = barcodeList;
         final List<Barcode> queryResult = new ArrayList<>();
+        final Barcode[] cachedBarcodes = barcodeList.toArray(new Barcode[]{});
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
@@ -149,8 +149,6 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             public boolean onQueryTextSubmit(String s) {
                 return false;
             }
-
-            final Barcode[] cachedBarcodes = barcodeList.toArray(new Barcode[]{});
 
             @Override
             public boolean onQueryTextChange(String s) {
@@ -164,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
                     }
                 }
 
+                //TODO find some way to optimize UI refresh
                 refreshListView(queryResult);
                 return true;
             }
