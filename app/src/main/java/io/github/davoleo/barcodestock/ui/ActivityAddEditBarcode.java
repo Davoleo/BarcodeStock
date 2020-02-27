@@ -1,5 +1,6 @@
 package io.github.davoleo.barcodestock.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
-import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 public class ActivityAddEditBarcode extends AppCompatActivity {
 
@@ -30,12 +30,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         editMode = getIntent().getBooleanExtra("edit", false);
 
         if (editMode) {
-            Bundle barcodeBundle = getIntent().getBundleExtra("barcode");
-            selectedBarcode = new Barcode(
-                    barcodeBundle.getLong("code"),
-                    barcodeBundle.getString("title"),
-                    barcodeBundle.getString("desc"),
-                    barcodeBundle.getFloat("price"));
+            selectedBarcode = Barcode.fromBundle(getIntent().getExtras());
 
             setTitle(R.string.title_activity_edit_barcode);
             ((Button) findViewById(R.id.button)).setText(R.string.btn_save);
@@ -61,10 +56,14 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             float price = Float.parseFloat(txbPrice.toString());
 
             if (!title.isEmpty() && !desc.isEmpty()) {
-                Barcode barcode = new Barcode(code, title, desc, price);
-                BarcodeFileUtils.writeToFile(this, barcode);
 
-                setResult(RESULT_OK);
+                Barcode barcode = new Barcode(code, title, desc, price);
+                Bundle barcodeBundle = selectedBarcode.toBundle();
+                Intent intent = new Intent();
+
+                intent.putExtra("oldBarcode", barcodeBundle);
+                intent.putExtra("newBarcode", barcode.toBundle());
+                setResult(RESULT_OK, intent);
                 this.finish();
             }
 

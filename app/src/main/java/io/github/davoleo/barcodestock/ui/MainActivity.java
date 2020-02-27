@@ -95,6 +95,15 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         if (requestCode == 1 && resultCode == RESULT_OK) {
             refreshListView(BarcodeFileUtils.readAll(this));
         }
+
+        if (requestCode == 2 && resultCode == RESULT_OK) {
+            Bundle oldBarcode = data.getBundleExtra("oldBarcode");
+            Barcode newBarcode = Barcode.fromBundle(data.getBundleExtra("newBarcode"));
+            adapter.remove(oldBarcode.getLong("code"), oldBarcode.getString("title"), oldBarcode.getString("desc"), oldBarcode.getFloat("price"));
+            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
+            BarcodeFileUtils.writeToFile(this, newBarcode);
+            refreshListView(BarcodeFileUtils.readAll(this));
+        }
     }
 
     //Build List Context Menu
@@ -112,17 +121,12 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         if (item.getItemId() == R.id.context_edit_barcode) {
             Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", true);
-            Bundle bundle = new Bundle();
-            bundle.putFloat("price", barcode.getPrice());
-            bundle.putString("title", barcode.getTitle());
-            bundle.putString("desc", barcode.getDescription());
-            bundle.putLong("code", barcode.getCode());
-            intent.putExtra("barcode", bundle);
-            adapter.remove(barcode);
-            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
-            startActivityForResult(intent, 1);
+            Bundle bundle = barcode.toBundle();
+            intent.putExtras(bundle);
+            startActivityForResult(intent, 2);
             return true;
-        } else if (item.getItemId() == R.id.context_remove_barcode) {
+        }
+        else if (item.getItemId() == R.id.context_remove_barcode) {
             adapter.remove(barcode);
             BarcodeFileUtils.overwriteListToFile(this, barcodeList);
             return true;

@@ -41,6 +41,17 @@ public class BarcodeAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void remove(long code, String title, String desc, float price) {
+        Barcode barcodeToRemove = null;
+        for (Barcode barcode : barcodeList) {
+            if (barcode.getCode() == code && barcode.getTitle().equals(title) && barcode.getDescription().equals(desc) && barcode.getPrice() == price)
+                barcodeToRemove = barcode;
+        }
+
+        if (barcodeToRemove != null)
+            barcodeList.remove(barcodeToRemove);
+    }
+
     @Override
     public int getCount() {
         return barcodeList.size();

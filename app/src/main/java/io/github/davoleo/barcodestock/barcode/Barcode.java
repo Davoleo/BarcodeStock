@@ -1,5 +1,6 @@
 package io.github.davoleo.barcodestock.barcode;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 /*************************************************
@@ -41,6 +42,24 @@ public class Barcode implements Comparable<Barcode> {
 
     public float getPrice() {
         return price;
+    }
+
+    public Bundle toBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putLong("code", code);
+        bundle.putString("title", title);
+        bundle.putString("desc", description);
+        bundle.putFloat("price", price);
+        return bundle;
+    }
+
+    public static Barcode fromBundle(Bundle bundle) {
+        return new Barcode(
+                bundle.getLong("code"),
+                bundle.getString("title"),
+                bundle.getString("desc"),
+                bundle.getFloat("price")
+        );
     }
 
     @Override
