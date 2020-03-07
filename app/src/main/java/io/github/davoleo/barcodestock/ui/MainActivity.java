@@ -15,6 +15,7 @@ import android.widget.Toast;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.barcode.BarcodeAdapter;
+import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
 import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
 import io.github.davoleo.barcodestock.ui.dialog.SortingDialogFragment;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -80,6 +81,15 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //                        .setAction("Action", null).show();
+            }
+        });
+
+        FloatingActionButton fabShot = findViewById(R.id.fabShot);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
+                startActivity(intent);
             }
         });
 
