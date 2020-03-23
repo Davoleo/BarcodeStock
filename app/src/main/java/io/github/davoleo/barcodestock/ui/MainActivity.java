@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         });
 
         FloatingActionButton fabShot = findViewById(R.id.fabShot);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
