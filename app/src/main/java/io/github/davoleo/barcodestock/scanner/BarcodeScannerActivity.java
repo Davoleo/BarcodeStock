@@ -7,11 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 import io.github.davoleo.barcodestock.R;
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
@@ -20,9 +21,7 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BarcodeScannerActivity extends AppCompatActivity implements MessageDialogFragment.MessageDialogListener,
-        ZBarScannerView.ResultHandler, FormatSelectorDialogFragment.FormatSelectorDialogListener,
-        CameraSelectorDialogFragment.CameraSelectorDialogListener {
+public class BarcodeScannerActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler{
 
     private static final String FLASH_STATE = "FLASH_STATE";
     private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
@@ -50,7 +49,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Message
         }
 
         setContentView(R.layout.activity_barcode_scanner);
-        setupToolbar();
+        //setupToolbar();
         ViewGroup contentFrame = findViewById(R.id.content_frame);
         scannerView = new ZBarScannerView(this);
         setupFormats();
@@ -91,7 +90,8 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Message
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
         } catch (Exception e) {}
-        showMessageDialog("Contents = " + rawResult.getContents() + ", Format = " + rawResult.getBarcodeFormat().getName())
+
+        Snackbar.make(scannerView, "Content = " + rawResult.getContents() + " | Format = " + rawResult.getBarcodeFormat().getName(), Snackbar.LENGTH_LONG);
     }
 
     @Override
@@ -103,6 +103,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Message
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public void setupFormats() {
         List<BarcodeFormat> formats = new ArrayList<>();
@@ -125,7 +126,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements Message
     public void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setActionBar(toolbar);
+            setSupportActionBar(toolbar);
         }
 
         final ActionBar actionBar = getActionBar();
