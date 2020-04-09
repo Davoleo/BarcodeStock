@@ -26,7 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SortingDialogFragment.SortingDialogListener {
 
-    private static final String TAG = "MainActivity";
+    public static final String TAG = "BarcodeStock";
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;

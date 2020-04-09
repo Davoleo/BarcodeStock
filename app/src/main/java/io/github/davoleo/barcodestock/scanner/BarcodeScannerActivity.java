@@ -1,6 +1,10 @@
 package io.github.davoleo.barcodestock.scanner;
 
+import android.Manifest;
 import android.app.ActionBar;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -8,12 +12,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import io.github.davoleo.barcodestock.R;
+import me.dm7.barcodescanner.core.CameraWrapper;
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
@@ -27,6 +34,8 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
     private static final String AUTO_FOCUS_STATE = "AUTO_FOCUS_STATE";
     private static final String SELECTED_FORMATS = "SELECTED_FORMATS";
     private static final String CAMERA_ID = "CAMERA_ID";
+
+    private Camera camera;
     private ZBarScannerView scannerView;
     private boolean mFlash;
     private boolean mAutoFocus;
@@ -36,6 +45,13 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 3);
+        }
+
+        camera = initCamera(getApplicationContext());
+
         if (savedInstanceState != null) {
             mFlash = savedInstanceState.getBoolean(FLASH_STATE, false);
             mAutoFocus = savedInstanceState.getBoolean(AUTO_FOCUS_STATE, true);
@@ -52,6 +68,7 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
         //setupToolbar();
         ViewGroup contentFrame = findViewById(R.id.content_frame);
         scannerView = new ZBarScannerView(this);
+        scannerView.setupCameraPreview(CameraWrapper.getWrapper(camera, mCameraId));
         setupFormats();
         contentFrame.addView(scannerView);
     }
@@ -104,6 +121,23 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * @param context The context of the application
+     * @return the Camera object or null in case the camera is unavailable
+     */
+    private Camera initCamera(Context context) {
+        Camera camera = null;
+
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            try {
+                camera = Camera.open();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return camera;
+    }
 
     public void setupFormats() {
         List<BarcodeFormat> formats = new ArrayList<>();
