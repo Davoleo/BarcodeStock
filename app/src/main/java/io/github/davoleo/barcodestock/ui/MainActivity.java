@@ -15,6 +15,7 @@ import android.widget.Toast;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.barcode.BarcodeAdapter;
+import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
 import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
 import io.github.davoleo.barcodestock.ui.dialog.SortingDialogFragment;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SortingDialogFragment.SortingDialogListener {
 
-    private static final String TAG = "MainActivity";
+    public static final String TAG = "BarcodeStock";
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -80,6 +81,15 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //                        .setAction("Action", null).show();
+            }
+        });
+
+        FloatingActionButton fabShot = findViewById(R.id.fabShot);
+        fabShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
+                startActivityForResult(intent, 3);
             }
         });
 
@@ -96,13 +106,23 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             refreshListView(BarcodeFileUtils.readAll(this));
         }
 
-        if (requestCode == 2 && resultCode == RESULT_OK) {
-            Bundle oldBarcode = data.getBundleExtra("oldBarcode");
-            Barcode newBarcode = Barcode.fromBundle(data.getBundleExtra("newBarcode"));
-            adapter.remove(oldBarcode.getLong("code"), oldBarcode.getString("title"), oldBarcode.getString("desc"), oldBarcode.getFloat("price"));
-            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
-            BarcodeFileUtils.writeToFile(this, newBarcode);
-            refreshListView(BarcodeFileUtils.readAll(this));
+        if (data != null) {
+            if (requestCode == 2 && resultCode == RESULT_OK) {
+                Bundle oldBarcode = data.getBundleExtra("oldBarcode");
+                Barcode newBarcode = Barcode.fromBundle(data.getBundleExtra("newBarcode"));
+                adapter.remove(oldBarcode.getLong("code"), oldBarcode.getString("title"), oldBarcode.getString("desc"), oldBarcode.getFloat("price"));
+                BarcodeFileUtils.overwriteListToFile(this, barcodeList);
+                BarcodeFileUtils.writeToFile(this, newBarcode);
+                refreshListView(BarcodeFileUtils.readAll(this));
+            }
+
+            if (requestCode == 3 && resultCode == RESULT_OK) {
+                String barcode = data.getStringExtra("barcode");
+                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
+                startActivityForResult(intent, 1);
+            }
+        } else {
+            Log.w(TAG, "The activity result intent is null!");
         }
     }
 

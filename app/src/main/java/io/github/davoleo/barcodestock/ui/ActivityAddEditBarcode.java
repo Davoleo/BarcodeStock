@@ -29,6 +29,10 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
 
         editMode = getIntent().getBooleanExtra("edit", false);
 
+        if (getIntent().hasExtra("barcode")) {
+            ((EditText) findViewById(R.id.txbCode)).setText(getIntent().getStringExtra("barcode"));
+        }
+
         if (editMode) {
             selectedBarcode = Barcode.fromBundle(getIntent().getExtras());
 
