@@ -3,6 +3,7 @@ package io.github.davoleo.barcodestock.scanner;
 import android.Manifest;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.Ringtone;
@@ -16,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import io.github.davoleo.barcodestock.R;
@@ -99,16 +99,19 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
 
     @Override
     public void handleResult(Result rawResult) {
-        Log.i("BarcodeScanner", rawResult.getContents());
-        Log.i("BarcodeScanner", rawResult.getBarcodeFormat().getName());
 
-        try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            r.play();
-        } catch (Exception e) {}
+        //Plays a notification sound
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
 
         Snackbar.make(scannerView, "Content = " + rawResult.getContents() + " | Format = " + rawResult.getBarcodeFormat().getName(), Snackbar.LENGTH_LONG);
+
+        Intent intent = new Intent();
+        intent.putExtra("barcode", rawResult.getContents());
+
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
