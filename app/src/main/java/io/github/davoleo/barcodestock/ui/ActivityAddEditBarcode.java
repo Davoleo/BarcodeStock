@@ -44,6 +44,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
 
             ((EditText)findViewById(R.id.txbTitle)).setText(selectedBarcode.getTitle());
             ((EditText) findViewById(R.id.txbDesc)).setText(selectedBarcode.getDescription());
+
+
         }
     }
 
@@ -62,10 +64,15 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             if (!title.isEmpty() && !desc.isEmpty()) {
 
                 Barcode barcode = new Barcode(code, title, desc, price);
-                Bundle barcodeBundle = selectedBarcode.toBundle();
                 Intent intent = new Intent();
 
-                intent.putExtra("oldBarcode", barcodeBundle);
+                //Bundle the information about the old barcode
+                if (editMode) {
+                    Bundle barcodeBundle = selectedBarcode.toBundle();
+                    intent.putExtra("oldBarcode", barcodeBundle);
+                }
+
+                //Bundle information about the new Barcode
                 intent.putExtra("newBarcode", barcode.toBundle());
                 setResult(RESULT_OK, intent);
                 this.finish();
