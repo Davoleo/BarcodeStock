@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -84,15 +85,6 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             }
         });
 
-        FloatingActionButton fabShot = findViewById(R.id.fabShot);
-        fabShot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
-                startActivityForResult(intent, 3);
-            }
-        });
-
         //Build Alert Dialogs
         dialogs = new AlertDialogs(this);
     }
@@ -102,11 +94,14 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            refreshListView(BarcodeFileUtils.readAll(this));
-        }
-
         if (data != null) {
+
+            if (requestCode == 1 && resultCode == RESULT_OK) {
+                Bundle barcodeBundle = data.getBundleExtra("newBarcode");
+                BarcodeFileUtils.writeToFile(this, Barcode.fromBundle(barcodeBundle));
+                refreshListView(BarcodeFileUtils.readAll(this));
+            }
+
             if (requestCode == 2 && resultCode == RESULT_OK) {
                 Bundle oldBarcode = data.getBundleExtra("oldBarcode");
                 Barcode newBarcode = Barcode.fromBundle(data.getBundleExtra("newBarcode"));
@@ -117,6 +112,12 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             }
 
             if (requestCode == 3 && resultCode == RESULT_OK) {
+                String barcode = data.getStringExtra("barcode");
+                AlertDialog dialog = dialogs.buildAddBarcodeFromScanDialog(this, barcode);
+                dialog.show();
+            }
+
+            if (requestCode == 4 && resultCode == RESULT_OK) {
                 String barcode = data.getStringExtra("barcode");
                 Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
                 startActivityForResult(intent, 1);
@@ -225,5 +226,11 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         refreshListView(Arrays.asList(arr));
 
         Toast.makeText(getApplicationContext(), "Barcodes have been sorted!", Toast.LENGTH_SHORT).show();
+    }
+
+    //Search/Add from Scanner
+    public void startBarcodeScanner(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
+        startActivityForResult(intent, 3);
     }
 }

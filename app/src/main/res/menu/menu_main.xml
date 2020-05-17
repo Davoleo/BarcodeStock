@@ -11,24 +11,32 @@
           app:actionViewClass="android.widget.SearchView"
     />
 
+    <item android:id="@+id/action_scan"
+          android:title="@string/action_scan"
+          android:icon="@drawable/camera_icon"
+          android:orderInCategory="2"
+          app:showAsAction="ifRoom"
+          android:onClick="startBarcodeScanner"
+    />
+
     <item android:id="@+id/action_sort"
           android:title="@string/action_sort"
           android:icon="@drawable/ic_sort_24px"
-          android:orderInCategory="1"
+          android:orderInCategory="3"
           app:showAsAction="ifRoom"
           android:onClick="showSortingDialog"
     />
 
     <item android:id="@+id/action_refresh"
           android:title="@string/action_refresh"
-          android:orderInCategory="1"
+          android:orderInCategory="3"
           app:showAsAction="never"
           android:onClick="refreshClearBarcodeList"
     />
 
     <item android:id="@+id/action_clear"
           android:title="@string/action_clear"
-          android:orderInCategory="2"
+          android:orderInCategory="4"
           app:showAsAction="never"
           android:onClick="refreshClearBarcodeList"
     />

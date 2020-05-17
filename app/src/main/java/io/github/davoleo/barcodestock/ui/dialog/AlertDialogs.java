@@ -2,8 +2,11 @@ package io.github.davoleo.barcodestock.ui.dialog;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import android.widget.SearchView;
 import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.ui.ActivityAddEditBarcode;
 import io.github.davoleo.barcodestock.ui.MainActivity;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
@@ -43,6 +46,33 @@ public class AlertDialogs {
                 dialog.cancel();
             }
         });
+        return builder.create();
+    }
+
+    public AlertDialog buildAddBarcodeFromScanDialog(final Activity activity, final String barcode) {
+        builder.setMessage(activity.getString(R.string.message_scaned_barcode) + barcode + activity.getString(R.string.message_select_action));
+        builder.setPositiveButton(R.string.btn_add, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(activity.getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
+                activity.startActivityForResult(intent, 1);
+            }
+        });
+        builder.setNegativeButton(R.string.action_search, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SearchView searchView = activity.findViewById(R.id.action_search);
+                searchView.setIconified(false);
+                searchView.setQuery(barcode, true);
+            }
+        });
+        builder.setNeutralButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
         return builder.create();
     }
 }

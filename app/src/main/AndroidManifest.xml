@@ -20,7 +20,8 @@
                 android:label="@string/title_activity_add_barcode"
                 android:parentActivityName=".ui.MainActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="io.github.davoleo.barcodestock.ui.MainActivity"/>
@@ -29,7 +30,8 @@
                 android:name=".ui.MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

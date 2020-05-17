@@ -21,4 +21,7 @@
     <string name="action_remove_barcode">Remove Barcode</string>
     <string name="action_edit_barcode">Edit Barcode</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_scan">Scan</string>
+    <string name="message_scaned_barcode">\"Scanned Barcode: \"</string>
+    <string name="message_select_action">\nSelect what you want to do:</string>
 </resources>
