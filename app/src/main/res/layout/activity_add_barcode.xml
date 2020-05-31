@@ -123,7 +123,9 @@
                 android:layout_height="wrap_content" app:srcCompat="@drawable/baseline_camera_alt_black_36"
                 android:id="@+id/buttonScan"
                 android:layout_marginStart="20dp"
-                android:contentDescription="@string/action_scan"/>
+                android:contentDescription="@string/action_scan"
+                android:onClick="startScanner"
+        />
     </LinearLayout>
     <Button
             android:text="@string/btn_add"
