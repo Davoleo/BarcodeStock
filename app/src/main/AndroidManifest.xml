@@ -20,7 +20,7 @@
                 android:label="@string/title_activity_add_barcode"
                 android:parentActivityName=".ui.MainActivity"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar"
+                android:theme="@style/AppTheme"
                 tools:ignore="LockedOrientationActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
