@@ -1,6 +1,8 @@
 package io.github.davoleo.barcodestock.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,13 +18,14 @@ import android.widget.Toast;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.barcode.BarcodeAdapter;
+import io.github.davoleo.barcodestock.barcode.BarcodeComparator;
 import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
 import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
 import io.github.davoleo.barcodestock.ui.dialog.SortingDialogFragment;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SortingDialogFragment.SortingDialogListener {
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
+
+    public BarcodeComparator comparator;
 
     private int selectedItemId;
 
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
         setSupportActionBar(toolbar);
 
         barcodeList = BarcodeFileUtils.readAll(this);
+
+        comparator = new BarcodeComparator(Barcode.BarcodeFields.TITLE);
 
         //database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
 //        try {
@@ -197,7 +204,17 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
     }
 
     //UI Refresh and Clear -----------------------------------------
-    public void refreshListView (List<Barcode> newList){
+    public void refreshListView (List<Barcode> newList) {
+        int prefMethodIndex = getSharedPreferences(getString(R.string.barcode_stock_shared_prefs), Context.MODE_PRIVATE).getInt("orderby", -1);
+
+        if (prefMethodIndex != -1) {
+            Barcode.BarcodeFields comparePref = Barcode.BarcodeFields.values()[prefMethodIndex];
+            if (comparator.getComparableField() != comparePref) {
+                comparator.setCompareBy(comparePref);
+            }
+        }
+
+        Collections.sort(newList, comparator);
         adapter.getData().clear();
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
@@ -219,13 +236,11 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
     @Override
     public void onDialogClick(int sortingChoice) {
-        Barcode.sortingMethod = Barcode.BarcodeFields.values()[sortingChoice];
-        Barcode[] arr;
-        arr = barcodeList.toArray(new Barcode[0]);
-        Arrays.sort(arr);
-        refreshListView(Arrays.asList(arr));
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.barcode_stock_shared_prefs), Context.MODE_PRIVATE);
+        preferences.edit().putInt("orderby", sortingChoice).apply();
+        refreshListView(barcodeList);
 
-        Toast.makeText(getApplicationContext(), "Barcodes have been sorted!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Barcode sort configuration updated!", Toast.LENGTH_SHORT).show();
     }
 
     //Search/Add from Scanner

@@ -11,14 +11,12 @@ import android.support.annotation.NonNull;
  * Copyright - © - Davoleo - 2019
  **************************************************/
 
-public class Barcode implements Comparable<Barcode> {
+public class Barcode {
 
     private long code;
     private String title;
     private String description;
     private float price;
-
-    public static BarcodeFields sortingMethod = BarcodeFields.TITLE;
 
     public Barcode(long code, String title, String description, float price)
     {
@@ -60,21 +58,6 @@ public class Barcode implements Comparable<Barcode> {
                 bundle.getString("desc"),
                 bundle.getFloat("price")
         );
-    }
-
-    @Override
-    public int compareTo(Barcode o) {
-        switch (sortingMethod) {
-            case BARCODE:
-                return Long.compare(this.getCode(), o.getCode());
-            case DESCRIPTION:
-                return this.getDescription().compareToIgnoreCase(o.getDescription());
-            case PRICE:
-                return Float.compare(this.getPrice(), o.getPrice());
-            case TITLE:
-            default:
-                return this.getTitle().compareToIgnoreCase(o.getTitle());
-        }
     }
 
     @NonNull

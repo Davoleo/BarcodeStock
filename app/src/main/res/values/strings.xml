@@ -24,4 +24,5 @@
     <string name="action_scan">Scan</string>
     <string name="message_scaned_barcode">\"Scanned Barcode: \"</string>
     <string name="message_select_action">\nSelect what you want to do:</string>
+    <string name="barcode_stock_shared_prefs">io.github.davoleo.barcodestock.BARCODE_STOCK_PREFERENCES</string>
 </resources>

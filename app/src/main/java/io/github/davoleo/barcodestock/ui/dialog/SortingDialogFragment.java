@@ -17,20 +17,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.ui.MainActivity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+// TODO: 21/06/2020 move this to an activity containing all settings
 public class SortingDialogFragment extends DialogFragment {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final AtomicInteger selectedChoice = new AtomicInteger(0);
+        MainActivity activity = ((MainActivity) getActivity());
+        final AtomicInteger selectedChoice = new AtomicInteger(activity.comparator.getComparableField().ordinal());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.dialog_sort_title);
 
-        builder.setSingleChoiceItems(R.array.barcode_fields, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(R.array.barcode_fields, selectedChoice.get(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 selectedChoice.set(which);
