@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference android:title="@string/sorting_preferences"
+                    android:summary="@string/sorting_preferences_summary"
+                    android:defaultValue="TITLE"
+                    android:key="sorting_field"
+                    android:entries="@array/barcode_fields"
+                    android:entryValues="@array/barcode_field_ids"
+                    android:icon="@drawable/ic_sort_48px_black"
+    />
+
+</PreferenceScreen>

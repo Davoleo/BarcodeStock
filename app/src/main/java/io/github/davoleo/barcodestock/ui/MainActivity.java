@@ -1,42 +1,38 @@
 package io.github.davoleo.barcodestock.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.barcode.BarcodeAdapter;
 import io.github.davoleo.barcodestock.barcode.BarcodeComparator;
 import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
 import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
-import io.github.davoleo.barcodestock.ui.dialog.SortingDialogFragment;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SortingDialogFragment.SortingDialogListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "BarcodeStock";
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
-
-    public BarcodeComparator comparator;
 
     private int selectedItemId;
 
@@ -50,7 +46,10 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
         barcodeList = BarcodeFileUtils.readAll(this);
 
-        comparator = new BarcodeComparator(Barcode.BarcodeFields.TITLE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortingOption = sharedPreferences.getString(SettingsFragment.SORTING_OPTION, "TITLE");
+        BarcodeComparator comparator = new BarcodeComparator(Barcode.BarcodeFields.valueOf(sortingOption));
+        Collections.sort(barcodeList, comparator);
 
         //database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
 //        try {
@@ -205,17 +204,8 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
 
     //UI Refresh and Clear -----------------------------------------
     public void refreshListView (List<Barcode> newList) {
-        int prefMethodIndex = getSharedPreferences(getString(R.string.barcode_stock_shared_prefs), Context.MODE_PRIVATE).getInt("orderby", -1);
-
-        if (prefMethodIndex != -1) {
-            Barcode.BarcodeFields comparePref = Barcode.BarcodeFields.values()[prefMethodIndex];
-            if (comparator.getComparableField() != comparePref) {
-                comparator.setCompareBy(comparePref);
-            }
-        }
-
-        Collections.sort(newList, comparator);
         adapter.getData().clear();
+        sortBarcodeList(newList);
         adapter.getData().addAll(newList);
         adapter.notifyDataSetChanged();
         Log.d(TAG, "refreshListView: |!|!|!|!|!|  CALLED  |!|!|!|!|!|");
@@ -228,24 +218,24 @@ public class MainActivity extends AppCompatActivity implements SortingDialogFrag
             dialogs.CLEAR_DIALOG.show();
     }
 
-    //Sorting methods ----------------------------------------------
-    public void showSortingDialog(MenuItem item) {
-        SortingDialogFragment dialog = new SortingDialogFragment();
-        dialog.show(getSupportFragmentManager(), "sorting");
-    }
+    //Sorting methods ---------------------------------------------
+    // TODO: 25/06/2020 Find a way to refresh the main list automatically when needed
+    public void sortBarcodeList(List<Barcode> list) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String sortingOption = sharedPreferences.getString(SettingsFragment.SORTING_OPTION, "TITLE");
+        BarcodeComparator comparator = new BarcodeComparator(Barcode.BarcodeFields.valueOf(sortingOption));
 
-    @Override
-    public void onDialogClick(int sortingChoice) {
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.barcode_stock_shared_prefs), Context.MODE_PRIVATE);
-        preferences.edit().putInt("orderby", sortingChoice).apply();
-        refreshListView(barcodeList);
-
-        Toast.makeText(getApplicationContext(), "Barcode sort configuration updated!", Toast.LENGTH_SHORT).show();
+        Collections.sort(list, comparator);
     }
 
     //Search/Add from Scanner
     public void startBarcodeScanner(MenuItem item) {
         Intent intent = new Intent(getApplicationContext(), BarcodeScannerActivity.class);
         startActivityForResult(intent, 3);
+    }
+
+    public void startSettingsActivity(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
     }
 }

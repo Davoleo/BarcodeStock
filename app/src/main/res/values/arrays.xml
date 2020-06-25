@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="barcode_fields">
+    <string-array name="barcode_fields">
         <item>@string/label_barcode_code</item>
         <item>@string/label_barcode_title</item>
         <item>@string/label_barcode_desc</item>
         <item>@string/label_barcode_price</item>
-    </array>
+    </string-array>
+    <string-array name="barcode_field_ids">
+        <item>BARCODE</item>
+        <item>TITLE</item>
+        <item>DESCRIPTION</item>
+        <item>PRICE</item>
+    </string-array>
 </resources>

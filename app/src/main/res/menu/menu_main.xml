@@ -19,12 +19,12 @@
           android:onClick="startBarcodeScanner"
     />
 
-    <item android:id="@+id/action_sort"
-          android:title="@string/action_sort"
-          android:icon="@drawable/ic_sort_24px"
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:icon="@drawable/baseline_settings_white_24"
           android:orderInCategory="3"
           app:showAsAction="ifRoom"
-          android:onClick="showSortingDialog"
+          android:onClick="startSettingsActivity"
     />
 
     <item android:id="@+id/action_refresh"

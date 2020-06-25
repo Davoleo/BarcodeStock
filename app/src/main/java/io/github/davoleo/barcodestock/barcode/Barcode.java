@@ -1,7 +1,7 @@
 package io.github.davoleo.barcodestock.barcode;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /*************************************************
  * Author: Davoleo

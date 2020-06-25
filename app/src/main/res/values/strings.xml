@@ -25,4 +25,6 @@
     <string name="message_scaned_barcode">\"Scanned Barcode: \"</string>
     <string name="message_select_action">\nSelect what you want to do:</string>
     <string name="barcode_stock_shared_prefs">io.github.davoleo.barcodestock.BARCODE_STOCK_PREFERENCES</string>
+    <string name="sorting_preferences">Sorting Settings</string>
+    <string name="sorting_preferences_summary">Choose the default sorting order of the main barcode list</string>
 </resources>
