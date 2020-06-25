@@ -146,9 +146,9 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
         List<BarcodeFormat> formats = new ArrayList<>();
         if (mSelectedIndices == null || mSelectedIndices.isEmpty()) {
             mSelectedIndices = new ArrayList<>();
-            for (int i = 0; i < BarcodeFormat.ALL_FORMATS.size(); i++) {
-                mSelectedIndices.add(i);
-            }
+            mSelectedIndices.add(BarcodeFormat.UPCE.getId());
+            mSelectedIndices.add(BarcodeFormat.UPCA.getId());
+            mSelectedIndices.add(BarcodeFormat.EAN13.getId());
         }
 
         for (int index : mSelectedIndices) {
