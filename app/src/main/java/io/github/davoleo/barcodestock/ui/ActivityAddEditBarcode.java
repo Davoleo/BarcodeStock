@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
     private Barcode selectedBarcode = null;
     private boolean editMode;
 
+    private Button confirmButton;
+
     private EditText barcodeTxb;
     private EditText titleTxb;
     private EditText descriptionTxb;
@@ -30,6 +33,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_barcode);
+
+        confirmButton = findViewById(R.id.button);
 
         barcodeTxb = findViewById(R.id.txbCode);
         titleTxb = findViewById(R.id.txbTitle);
@@ -46,7 +51,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             selectedBarcode = Barcode.fromBundle(getIntent().getExtras());
 
             setTitle(R.string.title_activity_edit_barcode);
-            barcodeTxb.setText(R.string.btn_save);
+            confirmButton.setText(R.string.btn_save);
 
             barcodeTxb.setText(String.valueOf(selectedBarcode.getCode()));
             priceTxb.setText(String.valueOf(selectedBarcode.getPrice()));

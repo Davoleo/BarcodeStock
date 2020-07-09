@@ -55,12 +55,12 @@
         />
         <EditText
                 android:layout_width="200dp"
-                android:layout_height="71dp"
+                android:layout_height="150dp"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:id="@+id/txbDesc"
                 android:textAllCaps="false"
-                android:maxLength="100"
+                android:maxLength="200"
                 android:importantForAutofill="no" tools:targetApi="o"
                 android:layout_marginStart="20dp"
         />

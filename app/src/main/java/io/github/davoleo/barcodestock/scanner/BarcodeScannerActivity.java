@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import com.google.android.material.snackbar.Snackbar;
 import io.github.davoleo.barcodestock.R;
 import me.dm7.barcodescanner.core.CameraWrapper;
 import me.dm7.barcodescanner.zbar.BarcodeFormat;
@@ -105,7 +104,9 @@ public class BarcodeScannerActivity extends AppCompatActivity implements ZBarSca
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         r.play();
 
-        Snackbar.make(scannerView, "Content = " + rawResult.getContents() + " | Format = " + rawResult.getBarcodeFormat().getName(), Snackbar.LENGTH_LONG);
+        //Debug Snack
+        //Snackbar.make(scannerView, "Content = " + rawResult.getContents() + " | Format = " + rawResult.getBarcodeFormat().getName(), Snackbar.LENGTH_LONG);
+
 
         Intent intent = new Intent();
         intent.putExtra("barcode", rawResult.getContents());

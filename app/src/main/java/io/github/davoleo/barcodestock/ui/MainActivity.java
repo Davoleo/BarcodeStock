@@ -22,6 +22,7 @@ import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
 import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "BarcodeStock";
+    public static WeakReference<MainActivity> INSTANCE;
 
     private BarcodeAdapter adapter;
     private List<Barcode> barcodeList;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        INSTANCE = new WeakReference<>(this);
         barcodeList = BarcodeFileUtils.readAll(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (requestCode == 3 && resultCode == RESULT_OK) {
+                refreshListView(BarcodeFileUtils.readAll(this));
                 String barcode = data.getStringExtra("barcode");
                 AlertDialog dialog = dialogs.buildAddBarcodeFromScanDialog(this, barcode);
                 dialog.show();
@@ -235,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startSettingsActivity(MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }

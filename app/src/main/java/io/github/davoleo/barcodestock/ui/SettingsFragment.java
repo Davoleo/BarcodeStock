@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.preference.PreferenceFragmentCompat;
 import io.github.davoleo.barcodestock.R;
+import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -28,6 +29,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 Log.d(MainActivity.TAG, "onSharedPreferenceChanged: Preferred sorting method was changed");
+                MainActivity mainActivity = MainActivity.INSTANCE.get();
+                if (mainActivity != null) {
+                    mainActivity.refreshListView(BarcodeFileUtils.readAll(mainActivity));
+                }
             }
         };
     }
