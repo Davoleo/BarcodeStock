@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "io.github.davoleo.barcodestock"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
         versionName "0.3.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,6 +35,6 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     //barcode scanner
-    implementation 'me.dm7.barcodescanner:zbar:1.9.13'
+    implementation 'com.google.mlkit:barcode-scanning:16.0.1'
 
 }
