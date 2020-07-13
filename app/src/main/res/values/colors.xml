@@ -4,5 +4,5 @@
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#000000</color>
     <color name="colorPrimaryLight">#484848</color>
-    <color name="actionBarOpacity">#33000000</color>
+    <color name="actionBarOpacity">#66000000</color>
 </resources>

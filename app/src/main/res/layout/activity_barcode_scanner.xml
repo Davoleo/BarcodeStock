@@ -6,6 +6,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <TextureView android:layout_width="match_parent" android:layout_height="match_parent"
+                 android:id="@+id/cameraPreview"
+    />
+
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_gravity="top"
@@ -13,10 +17,7 @@
             android:background="@color/actionBarOpacity"
             app:theme="@style/TransparentToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+    />
 
 </FrameLayout>
