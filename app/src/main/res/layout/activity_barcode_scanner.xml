@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".scanner.BarcodeScannerActivity">
 
-    <TextureView android:layout_width="match_parent" android:layout_height="match_parent"
-                 android:id="@+id/cameraPreview"
-    />
+        <androidx.camera.view.PreviewView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/cameraPreview"
+        />
+
+<!--    <TextureView android:layout_width="match_parent" android:layout_height="match_parent"-->
+<!--                 android:id="@+id/cameraPreview"-->
+<!--    />-->
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_gravity="top"
             android:minHeight="?attr/actionBarSize"
             android:background="@color/actionBarOpacity"
-            app:theme="@style/TransparentToolbar"
+            android:theme="@style/TransparentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
     />

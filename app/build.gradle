@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -15,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -34,7 +40,16 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.preference:preference:1.1.1'
 
+    def cameraXVersion = '1.0.0-beta06'
+    //CameraX core lib using camera2
+    implementation "androidx.camera:camera-camera2:$cameraXVersion"
+    //CameraX Lifecycle lib
+    implementation "androidx.camera:camera-lifecycle:$cameraXVersion"
+    //CameraX View class
+    implementation 'androidx.camera:camera-view:1.0.0-alpha13'
+
     //barcode scanner
     implementation 'com.google.mlkit:barcode-scanning:16.0.1'
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

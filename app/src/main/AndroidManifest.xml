@@ -3,8 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="io.github.davoleo.barcodestock">
     <!-- Camera permissions -->
+    <uses-feature android:name="android.hardware.camera.any"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera2.full" />
 
     <application
             android:allowBackup="true"
@@ -14,12 +14,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.SettingsActivity"
-                  android:parentActivityName=".ui.MainActivity"
-                  android:label="@string/action_settings">
-        </activity>
-        <activity android:name=".scanner.BarcodeScannerActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".scanner.BarcodeScannerActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".ui.SettingsActivity"
+                android:label="@string/action_settings"
+                android:parentActivityName=".ui.MainActivity">
         </activity>
         <activity
                 android:name=".ui.ActivityAddEditBarcode"
