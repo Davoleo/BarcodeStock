@@ -1,6 +1,7 @@
 package io.github.davoleo.barcodestock.scanner
 
 import android.util.Log
+import androidx.annotation.MainThread
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -10,11 +11,13 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import io.github.davoleo.barcodestock.ui.MainActivity
 
-class BarcodeAnalyzer : ImageAnalysis.Analyzer {
+class BarcodeAnalyzer(val graphicOverlay: GraphicOverlay) : ImageAnalysis.Analyzer {
+
 
     private val formats = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_EAN_13, Barcode.FORMAT_UPC_A, Barcode.FORMAT_UPC_E)
             .build()
+
 
     @ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
@@ -25,16 +28,13 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 
             val scanner = BarcodeScanning.getClient(formats)
-            val result = scanner.process(image)
+
+            scanner.process(image)
                     .addOnSuccessListener { barcodeList ->
-                        for (barcode in barcodeList) {
-                            println(barcode.displayValue)
-                        }
+                        onSuccess(barcodeList, graphicOverlay)
                     }
                     .addOnFailureListener {
-                        // Scanning Failure:
-                        // Called whenever the scanner couldn't find a valid barcode
-                        // This is not an exceptional application state
+                        onFailure(it)
                     }
 
         }
@@ -42,15 +42,26 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
         imageProxy.close()
     }
 
-    companion object {
-        fun onSuccess(barcodes: List<Barcode>, graphicOverlay: GraphicOverlay) {
-            if (barcodes.isEmpty()) {
-                Log.v(MainActivity.TAG, "No barcodes have been detected")
-            }
 
-            barcodes.forEach { barcode ->
-                graphicOverlay.add(BarcodeGraphic(graphicOverlay, barcode))
-            }
+    @MainThread
+    fun onSuccess(results: List<Barcode>, graphicOverlay: GraphicOverlay) {
+
+        val barcodeInCenter = results.firstOrNull() {barcode ->
+            val boundingBox = barcode.boundingBox ?: return@firstOrNull false
+            val box = graphicOverlay.translateRect(boundingBox);
+            box.contains(graphicOverlay.width / 2F, graphicOverlay.height / 2F)
         }
+
+        graphicOverlay.clear()
+
+        if (barcodeInCenter == null) {
+            graphicOverlay.add(BarcodeGraphic(graphicOverlay, barcodeInCenter))
+        }
+
+        graphicOverlay.invalidate()
+    }
+
+    fun onFailure(e: Exception) {
+        Log.e(MainActivity.TAG, "Barcode detection failed!", e)
     }
 }

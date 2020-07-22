@@ -53,11 +53,11 @@ class BarcodeScannerActivity : AppCompatActivity(), View.OnClickListener {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetResolution(Size(360, 640))
+                .setTargetResolution(Size(480, 640))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer())
+                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer(graphicOverlay!!))
                 }
     }
 
@@ -66,6 +66,8 @@ class BarcodeScannerActivity : AppCompatActivity(), View.OnClickListener {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Barcode Scanner requires access to the camera", Toast.LENGTH_SHORT).show()
                 finish()
+            } else {
+                startCamera()
             }
         }
     }

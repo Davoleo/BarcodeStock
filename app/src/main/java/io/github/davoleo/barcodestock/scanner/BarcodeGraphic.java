@@ -53,24 +53,23 @@ public class BarcodeGraphic extends GraphicOverlay.Graphic {
         }
 
         RectF rect = new RectF(barcode.getBoundingBox());
-        rect.left = translateX(rect.left);
-        rect.top = translateY(rect.top);
-        rect.right = translateX(rect.right);
-        rect.bottom = translateY(rect.bottom);
+        rect.left = overlay.translateX(rect.left);
+        rect.top = overlay.translateY(rect.top);
+        rect.right = overlay.translateX(rect.right);
+        rect.bottom = overlay.translateY(rect.bottom);
         canvas.drawRect(rect, rectPaint);
 
         float lineHeight = TEXT_SIZE + (2 * STROKE_WIDTH);
         float textWidth = barcodePaint.measureText(barcode.getRawValue());
-        float left = isImageFlipped() ? rect.right : rect.left;
 
         canvas.drawRect(
-                left - STROKE_WIDTH,
+                rect.left - STROKE_WIDTH,
                 rect.top - lineHeight,
-                left + textWidth + (2 * STROKE_WIDTH),
+                rect.left + textWidth + (2 * STROKE_WIDTH),
                 rect.top,
                 labelPaint
         );
 
-        canvas.drawText(barcode.getRawValue(), left, rect.top - STROKE_WIDTH, barcodePaint);
+        canvas.drawText(barcode.getRawValue(), rect.left, rect.top - STROKE_WIDTH, barcodePaint);
     }
 }
