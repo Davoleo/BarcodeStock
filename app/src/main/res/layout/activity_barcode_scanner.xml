@@ -16,13 +16,13 @@
 <!--                 android:id="@+id/cameraPreview"-->
 <!--    />-->
 
-    <io.github.davoleo.barcodestock.scanner.GraphicOverlay android:layout_width="match_parent"
+        <io.github.davoleo.barcodestock.scanner.GraphicOverlay android:layout_width="match_parent"
                                                            android:layout_height="match_parent"
                                                            android:id="@+id/cameraPreviewOverlay"
-    />
+        />
 
 
-    <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_gravity="top"
             android:minHeight="?attr/actionBarSize"
@@ -30,6 +30,6 @@
             android:theme="@style/TransparentToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-    />
+        />
 
 </FrameLayout>

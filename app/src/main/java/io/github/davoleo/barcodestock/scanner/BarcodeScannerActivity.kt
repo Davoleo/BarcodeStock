@@ -7,18 +7,19 @@ import android.util.Log
 import android.util.Size
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import io.github.davoleo.barcodestock.R
 import io.github.davoleo.barcodestock.ui.MainActivity
+import io.github.davoleo.barcodestock.util.GraphicUtils
 import kotlinx.android.synthetic.main.activity_barcode_scanner.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -29,10 +30,11 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             .setBarcodeFormats(Barcode.FORMAT_EAN_13, Barcode.FORMAT_UPC_A, Barcode.FORMAT_UPC_E)
             .build()
 
+    private var barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(formats)
+
     private var preview: Preview? = null
     private var graphicOverlay: GraphicOverlay? = null
     private var imageAnalyzer: ImageAnalysis? = null
-    private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
 
     private lateinit var cameraExecutor: ExecutorService
@@ -40,6 +42,8 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barcode_scanner)
+
+        lifecycle.addObserver(barcodeScanner)
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
@@ -84,15 +88,11 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     }
 
     private fun startCamera() {
-        val cameraProvider = ProcessCameraProvider.getInstance(this)
+        val futureCameraProvider = ProcessCameraProvider.getInstance(this)
 
-        cameraProvider.addListener(Runnable {
+        futureCameraProvider.addListener(Runnable {
             //Used to bind lifecycle of cameras to the lifecycle owner [takes care of opening and closing the camera]
-            val cameraProvider: ProcessCameraProvider = cameraProvider.get()
-
-            imageCapture = ImageCapture.Builder()
-                    .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                    .build()
+            val cameraProvider: ProcessCameraProvider = futureCameraProvider.get()
 
             //preview
             preview = Preview.Builder().build()
@@ -120,41 +120,55 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-            val scanner = BarcodeScanning.getClient(formats)
 
             if (graphicOverlay != null) {
-                val result = scanner.process(image)
+                barcodeScanner.process(image)
                         .addOnSuccessListener { barcodeList ->
                             onSuccess(barcodeList, graphicOverlay!!)
                         }
                         .addOnFailureListener {
                             onFailure(it)
                         }
+                        .addOnCompleteListener { imageProxy.close() }
             }
             else
                 Log.w(MainActivity.TAG, "overlay is null :(")
-
         }
-
-        imageProxy.close()
     }
 
-    @MainThread
     fun onSuccess(results: List<Barcode>, graphicOverlay: GraphicOverlay) {
 
-        Log.i(MainActivity.TAG, "Raw Value: " + results.firstOrNull()?.rawValue)
-        val barcodeInCenter = results.firstOrNull()
-//        {barcode ->
-//            val boundingBox = barcode.boundingBox ?: return@firstOrNull false
-//            val box = graphicOverlay.translateRect(boundingBox);
-//            box.contains(graphicOverlay.width / 2F, graphicOverlay.height / 2F)
-//        }
+        //Log.i(MainActivity.TAG, "Barcode Type: " + results.firstOrNull()?.valueType)
+
+        // TODO: 31/07/2020 improve this check and make barcode detection less rough
+        val reticle = BarcodeGraphic.getReticleBox(graphicOverlay)
+        var barcodeInCenter: Barcode?
+
+        barcodeInCenter = results.firstOrNull { barcode ->
+            //Take barcode's bounding box, otherwise if boundingBox is null then return null as barcodeInCenter
+            val boundingBox = barcode.boundingBox ?: return@firstOrNull false
+            val box = GraphicUtils.scale(boundingBox, 4F)
+            box.contains(reticle.centerX(), reticle.centerY())
+        }
+
+        Log.i(MainActivity.TAG, "onSuccess: $barcodeInCenter")
+        //Log.i(MainActivity.TAG, "Raw Value: $barcodeInCenter")
+        val xLeft = results.firstOrNull()?.boundingBox?.left ?: -1
+        val yTop = results.firstOrNull()?.boundingBox?.top ?: -1
+        val xRight = results.firstOrNull()?.boundingBox?.right ?: -1
+        val yBottom = results.firstOrNull()?.boundingBox?.bottom ?: -1
+        Log.i(MainActivity.TAG, "onSuccess: $xLeft | ${reticle.left}")
+        Log.i(MainActivity.TAG, "onSuccess: $yTop | ${reticle.top}")
+        Log.i(MainActivity.TAG, "onSuccess: $xRight | ${reticle.right}")
+        Log.i(MainActivity.TAG, "onSuccess: $yBottom | ${reticle.bottom}")
 
         graphicOverlay.clear()
 
-        if (barcodeInCenter != null) {
-            //graphicOverlay.add(BarcodeGraphic(graphicOverlay, barcodeInCenter))
-
+        if (barcodeInCenter == null) {
+            graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.colorPrimaryLight)))
+        }
+        else {
+            graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.pureRed)))
         }
 
         graphicOverlay.invalidate()
