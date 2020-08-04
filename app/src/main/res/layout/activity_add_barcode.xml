@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.ActivityAddEditBarcode"
         android:orientation="vertical" android:visibility="visible"
-        android:gravity="center_horizontal"
+        android:gravity="start"
 >
 
     <LinearLayout
@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="@dimen/padding_default"
+            android:layout_marginStart="10dp"
     >
         <TextView
                 android:text="@string/label_barcode_title"
@@ -42,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:visibility="visible"
             android:layout_marginBottom="@dimen/padding_default"
+            android:layout_marginStart="10dp"
     >
         <TextView
                 android:text="@string/label_barcode_desc"
@@ -55,7 +57,7 @@
         />
         <EditText
                 android:layout_width="200dp"
-                android:layout_height="150dp"
+                android:layout_height="125dp"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:id="@+id/txbDesc"
@@ -70,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_default"
+            android:layout_marginStart="10dp"
     >
         <TextView
                 android:text="@string/label_barcode_price"
@@ -96,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
+            android:layout_marginStart="10dp"
     >
         <TextView
                 android:text="@string/label_barcode_code"
@@ -122,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/baseline_camera_alt_black_36"
                 android:id="@+id/buttonScan"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:contentDescription="@string/action_scan"
                 android:onClick="startScanner"
         />
@@ -132,5 +136,7 @@
             android:layout_width="189dp"
             android:layout_height="60dp"
             android:id="@+id/button" android:textSize="20sp"
-            android:onClick="addBarcode"/>
+            android:onClick="addBarcode"
+            android:layout_gravity="center_horizontal"
+    />
 </LinearLayout>
