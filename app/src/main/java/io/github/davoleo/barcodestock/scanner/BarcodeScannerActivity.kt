@@ -1,7 +1,10 @@
 package io.github.davoleo.barcodestock.scanner
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.RingtoneManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -36,6 +39,8 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     private var graphicOverlay: GraphicOverlay? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
+
+    private var delayCount = 0
 
     private lateinit var cameraExecutor: ExecutorService
 
@@ -166,9 +171,22 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
         if (barcodeInCenter == null) {
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.colorPrimaryLight)))
+            delayCount = 0
         }
         else {
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.pureRed)))
+            delayCount++
+
+            if (delayCount > 60) {
+                val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val notifySound = RingtoneManager.getRingtone(applicationContext, notification)
+                notifySound.play()
+
+                val intent = Intent()
+                intent.putExtra("barcode", barcodeInCenter.rawValue)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         }
 
         graphicOverlay.invalidate()
