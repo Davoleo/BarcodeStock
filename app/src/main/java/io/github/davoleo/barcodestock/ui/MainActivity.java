@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -120,17 +119,25 @@ public class MainActivity extends AppCompatActivity {
                 refreshListView(BarcodeFileUtils.readAll(this));
             }
 
-            if (requestCode == 3 && resultCode == RESULT_OK) {
+            if ((requestCode == 3 || requestCode == 4) && resultCode == RESULT_OK) {
                 refreshListView(BarcodeFileUtils.readAll(this));
-                String barcode = data.getStringExtra("barcode");
-                AlertDialog dialog = dialogs.buildAddBarcodeFromScanDialog(this, barcode);
-                dialog.show();
-            }
 
-            if (requestCode == 4 && resultCode == RESULT_OK) {
                 String barcode = data.getStringExtra("barcode");
-                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
-                startActivityForResult(intent, 1);
+                boolean exists = barcodeList.stream()
+                        .map(listBarcode -> String.valueOf(listBarcode.getCode()))
+                        .anyMatch(listBarcode -> listBarcode.equals(barcode));
+
+                if (requestCode == 4)
+                    exists = false;
+
+                if (exists) {
+                    SearchView searchView = findViewById(R.id.action_search);
+                    searchView.setIconified(false);
+                    searchView.setQuery(barcode, true);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
+                    startActivityForResult(intent, 1);
+                }
             }
         } else {
             Log.w(TAG, "The activity result intent is null!");

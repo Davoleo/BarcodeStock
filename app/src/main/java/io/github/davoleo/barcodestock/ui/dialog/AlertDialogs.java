@@ -49,6 +49,7 @@ public class AlertDialogs {
         return builder.create();
     }
 
+    //Old Barcode Scanning Dialog
     public AlertDialog buildAddBarcodeFromScanDialog(final Activity activity, final String barcode) {
         builder.setMessage(activity.getString(R.string.message_scaned_barcode) + barcode + activity.getString(R.string.message_select_action));
         builder.setPositiveButton(R.string.btn_add, new DialogInterface.OnClickListener() {

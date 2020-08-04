@@ -177,7 +177,8 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.pureRed)))
             delayCount++
 
-            if (delayCount > 60) {
+            if (delayCount > 15) {
+                delayCount = 0
                 val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val notifySound = RingtoneManager.getRingtone(applicationContext, notification)
                 notifySound.play()
