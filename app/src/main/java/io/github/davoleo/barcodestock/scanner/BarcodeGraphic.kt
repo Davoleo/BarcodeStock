@@ -45,7 +45,6 @@ class BarcodeGraphic(overlay: GraphicOverlay, mColor: Int) : GraphicOverlay.Grap
 
     companion object {
         fun getReticleBox(overlay: GraphicOverlay): RectF {
-            val context = overlay.context
             val overlayWidth = overlay.width.toFloat()
             val overlayHeight = overlay.height.toFloat()
             val boxWidth = overlayWidth * 80 / 100

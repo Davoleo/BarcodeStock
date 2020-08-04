@@ -8,7 +8,6 @@ import android.media.RingtoneManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -63,7 +62,7 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         }
 
         graphicOverlay = findViewById<GraphicOverlay>(R.id.cameraPreviewOverlay).apply {
-            setOnClickListener { overlay: View? ->
+            setOnClickListener { //overlay: View? ->
                 run {
                     Log.i(MainActivity.TAG, "you tapped the OVERLAY :o")
                 }
