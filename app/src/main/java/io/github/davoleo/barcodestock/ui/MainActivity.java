@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (requestCode == 1 && resultCode == RESULT_OK) {
                 Bundle barcodeBundle = data.getBundleExtra("newBarcode");
-                BarcodeFileUtils.writeToFile(this, Barcode.fromBundle(barcodeBundle));
-                refreshListView(BarcodeFileUtils.readAll(this));
+                Barcode barcode = Barcode.fromBundle(barcodeBundle);
+                BarcodeFileUtils.writeToFile(this, barcode);
+                adapter.getData().add(barcode);
+                refreshListView(barcodeList);
             }
 
             if (requestCode == 2 && resultCode == RESULT_OK) {
@@ -180,8 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
-        final List<Barcode> queryResult = new ArrayList<>();
-        final Barcode[] cachedBarcodes = barcodeList.toArray(new Barcode[]{});
+        final List<Barcode> cachedBarcodes = new ArrayList<>(barcodeList);
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
@@ -194,15 +196,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                queryResult.clear();
 
-                for (Barcode barcode : cachedBarcodes) {
-                    if (barcode.getTitle().contains(s) || barcode.getDescription().contains(s) || String.valueOf(barcode.getCode()).contains(s)) {
-                        if (!queryResult.contains(barcode)) {
-                            queryResult.add(barcode);
-                        }
-                    }
-                }
+                List<Barcode> queryResult = cachedBarcodes.stream()
+                        .filter(barcode -> barcode.getTitle().contains(s)
+                                || barcode.getDescription().contains(s)
+                                || String.valueOf(barcode.getCode()).contains(s))
+                        .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh
                 refreshListView(queryResult);

@@ -143,6 +143,7 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
     fun onSuccess(results: List<Barcode>, graphicOverlay: GraphicOverlay) {
 
+        //Debug Logging ---
         //Log.i(MainActivity.TAG, "Barcode Type: " + results.firstOrNull()?.valueType)
 
         // TODO: 31/07/2020 improve this check and make barcode detection less rough
@@ -156,16 +157,17 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             box.contains(reticle.centerX(), reticle.centerY())
         }
 
-        Log.i(MainActivity.TAG, "onSuccess: $barcodeInCenter")
+        //Debug Logging ---
+        //Log.i(MainActivity.TAG, "onSuccess: $barcodeInCenter")
         //Log.i(MainActivity.TAG, "Raw Value: $barcodeInCenter")
-        val xLeft = results.firstOrNull()?.boundingBox?.left ?: -1
-        val yTop = results.firstOrNull()?.boundingBox?.top ?: -1
-        val xRight = results.firstOrNull()?.boundingBox?.right ?: -1
-        val yBottom = results.firstOrNull()?.boundingBox?.bottom ?: -1
-        Log.i(MainActivity.TAG, "onSuccess: $xLeft | ${reticle.left}")
-        Log.i(MainActivity.TAG, "onSuccess: $yTop | ${reticle.top}")
-        Log.i(MainActivity.TAG, "onSuccess: $xRight | ${reticle.right}")
-        Log.i(MainActivity.TAG, "onSuccess: $yBottom | ${reticle.bottom}")
+        //val xLeft = results.firstOrNull()?.boundingBox?.left ?: -1
+        //val yTop = results.firstOrNull()?.boundingBox?.top ?: -1
+        //val xRight = results.firstOrNull()?.boundingBox?.right ?: -1
+        //val yBottom = results.firstOrNull()?.boundingBox?.bottom ?: -1
+        //Log.i(MainActivity.TAG, "onSuccess: $xLeft | ${reticle.left}")
+        //Log.i(MainActivity.TAG, "onSuccess: $yTop | ${reticle.top}")
+        //Log.i(MainActivity.TAG, "onSuccess: $xRight | ${reticle.right}")
+        //Log.i(MainActivity.TAG, "onSuccess: $yBottom | ${reticle.bottom}")
 
         graphicOverlay.clear()
 
