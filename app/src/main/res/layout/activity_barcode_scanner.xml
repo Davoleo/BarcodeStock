@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".scanner.BarcodeScannerActivity">
 
         <androidx.camera.view.PreviewView
@@ -23,13 +23,14 @@
 
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_gravity="top"
-            android:minHeight="?attr/actionBarSize"
-            android:background="@color/actionBarOpacity"
-            android:theme="@style/TransparentToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                android:layout_gravity="top"
+                android:minHeight="?attr/actionBarSize"
+                android:background="@color/actionBarOpacity"
+                android:theme="@style/TransparentToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Scan Barcode"
         />
 
 </FrameLayout>

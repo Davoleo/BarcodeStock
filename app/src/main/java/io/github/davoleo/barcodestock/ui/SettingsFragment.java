@@ -25,14 +25,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
 
-        preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Log.d(MainActivity.TAG, "onSharedPreferenceChanged: Preferred sorting method was changed");
-                MainActivity mainActivity = MainActivity.INSTANCE.get();
-                if (mainActivity != null) {
-                    mainActivity.refreshListView(BarcodeFileUtils.readAll(mainActivity));
-                }
+        preferenceChangeListener = (sharedPreferences, key) -> {
+            Log.d(MainActivity.TAG, "onSharedPreferenceChanged: Preferred sorting method was changed");
+            MainActivity mainActivity = MainActivity.INSTANCE.get();
+            if (mainActivity != null) {
+                mainActivity.refreshListView(BarcodeFileUtils.readAll(mainActivity));
             }
         };
     }

@@ -1,7 +1,8 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="padding_default">10dp</dimen>
-    
+    <dimen name="main_toolbar_size">55dp</dimen>
+
     <dimen name="progress_bar_size">48dp</dimen>
     <dimen name="reticle_stroke_width">4dp</dimen>
     <dimen name="reticle_corner_radius">8dp</dimen>

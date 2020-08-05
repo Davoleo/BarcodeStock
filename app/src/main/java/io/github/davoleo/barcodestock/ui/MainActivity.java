@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
@@ -66,14 +66,11 @@ public class MainActivity extends AppCompatActivity {
         adapter = new BarcodeAdapter(this, barcodeList);
         listView.setAdapter(adapter);
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemLongClick: POSITION VALUE " + position);
-                selectedItemId = position;
-                listView.showContextMenu();
-                return true;
-            }
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            Log.d(TAG, "onItemLongClick: POSITION VALUE " + position);
+            selectedItemId = position;
+            listView.showContextMenu();
+            return true;
         });
 
         //Register for Floating Contextual Menu
@@ -82,16 +79,18 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: HAS STARTED SUCCESSFULLY");
 
         FloatingActionButton fab = findViewById(R.id.fabAdd);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false);
-                startActivityForResult(intent, 1);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false);
+            startActivityForResult(intent, 1);
 
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //                        .setAction("Action", null).show();
-            }
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //                        .setAction("Action", null).show();
+        });
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            refreshListView(BarcodeFileUtils.readAll(this));
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         //Build Alert Dialogs
