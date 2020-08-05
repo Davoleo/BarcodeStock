@@ -26,11 +26,15 @@ public class BarcodeFileUtils {
         try {
             writer = new FileWriter(buildFilePath(activity), true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
             bufferedWriter
                     .append(String.valueOf(barcode.getCode())).append("§")
-                    .append(barcode.getTitle()).append("§")
-                    .append(barcode.getDescription()).append("§")
-                    .append(String.valueOf(barcode.getPrice())).append("\n");
+                    .append(barcode.getTitle()).append("§");
+
+            //Encode New Lines
+            bufferedWriter.append(barcode.getDescription().replace("\n", "<NL>"));
+            bufferedWriter.append("§");
+            bufferedWriter.append(String.valueOf(barcode.getPrice())).append("\n");
 
             bufferedWriter.close();
             writer.close();
@@ -87,7 +91,9 @@ public class BarcodeFileUtils {
 
             while ((currentLine = bufferedReader.readLine()) != null) {
                 barcodeInfo = currentLine.split("§");
-                Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], barcodeInfo[2], Float.parseFloat(barcodeInfo[3]));
+                //Restore New Lines
+                String bDesc = barcodeInfo[2].replace("<NL>", "\n");
+                Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], bDesc, Float.parseFloat(barcodeInfo[3]));
                 barcodeList.add(barcode);
             }
 
