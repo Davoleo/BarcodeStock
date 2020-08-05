@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">BarcodeStock</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_add_barcode">New Barcode</string>
-    <string name="title_activity_edit_barcode">Edit Barcode</string>
+    <string name="title_activity_add_barcode">New Product</string>
+    <string name="title_activity_edit_barcode">Edit Product</string>
     <string name="label_barcode_title">Title</string>
     <string name="label_barcode_desc">Description</string>
     <string name="label_barcode_price">Price</string>
@@ -12,19 +12,22 @@
     <string name="btn_save">Save</string>
     <string name="action_search">Search</string>
     <string name="action_clear">Clear</string>
-    <string name="barcode_list_filename">BarcodeList</string>
-    <string name="message_clear_barcodes">Are you sure you want to remove all barcodes from the list?</string>
+    <string translatable="false" name="barcode_list_filename">BarcodeList</string>
+    <string name="message_clear_barcodes">Are you sure you want to remove all products from the list?</string>
     <string name="button_cancel">Cancel</string>
     <string name="ok">OK!</string>
     <string name="action_sort">Sort</string>
     <string name="dialog_sort_title">Sort By</string>
-    <string name="action_remove_barcode">Remove Barcode</string>
-    <string name="action_edit_barcode">Edit Barcode</string>
+    <string name="action_remove_barcode">Remove Product</string>
+    <string name="action_edit_barcode">Edit Product</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_scan">Scan</string>
+
+    <!-- Unused -->
     <string name="message_scaned_barcode">\"Scanned Barcode: \"</string>
     <string name="message_select_action">\nSelect what you want to do:</string>
+
     <string name="barcode_stock_shared_prefs">io.github.davoleo.barcodestock.BARCODE_STOCK_PREFERENCES</string>
     <string name="sorting_preferences">Sorting Settings</string>
-    <string name="sorting_preferences_summary">Choose the default sorting order of the main barcode list</string>
+    <string name="sorting_preferences_summary">Choose the default sorting order of the main products list</string>
 </resources>
