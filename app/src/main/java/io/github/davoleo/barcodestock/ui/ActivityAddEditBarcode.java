@@ -58,8 +58,6 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
 
             titleTxb.setText(selectedBarcode.getTitle());
             descriptionTxb.setText(selectedBarcode.getDescription());
-
-
         }
     }
 
@@ -91,8 +89,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 this.finish();
             }
-
-        }catch (NumberFormatException exception) {
+        }
+        catch (NumberFormatException exception) {
             exception.printStackTrace();
             Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG);
             Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");

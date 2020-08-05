@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     public static WeakReference<MainActivity> INSTANCE;
 
     private BarcodeAdapter adapter;
-    private List<Barcode> barcodeList;
     private AlertDialogs dialogs;
 
     private int selectedItemId;
@@ -47,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         INSTANCE = new WeakReference<>(this);
-        barcodeList = BarcodeFileUtils.readAll(this);
 
+        //Setup the sorting preferences
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String sortingOption = sharedPreferences.getString(SettingsFragment.SORTING_OPTION, "TITLE");
         BarcodeComparator comparator = new BarcodeComparator(Barcode.BarcodeFields.valueOf(sortingOption));
-        Collections.sort(barcodeList, comparator);
+
+        List<Barcode> barcodesFromLocalFile = BarcodeFileUtils.readAll(this);
+        Collections.sort(barcodesFromLocalFile, comparator);
 
         //database = Room.databaseBuilder(getApplicationContext(), BarcodeDatabase.class, "barcode_db").build();
 //        try {
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Link data source to the listview using a custom Adapter
         final ListView listView = findViewById(R.id.barcodeListView);
-        adapter = new BarcodeAdapter(this, barcodeList);
+        adapter = new BarcodeAdapter(this, barcodesFromLocalFile);
         listView.setAdapter(adapter);
 
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -104,19 +105,25 @@ public class MainActivity extends AppCompatActivity {
 
         if (data != null) {
 
+            //Result of Adding a new barcode
             if (requestCode == 1 && resultCode == RESULT_OK) {
                 Bundle barcodeBundle = data.getBundleExtra("newBarcode");
                 Barcode barcode = Barcode.fromBundle(barcodeBundle);
+                //Apply the changes on the local device storage
                 BarcodeFileUtils.writeToFile(this, barcode);
+
+                //Apply changes on the adapterView
                 adapter.getData().add(barcode);
-                refreshListView(barcodeList);
+                sortBarcodeList(adapter.getData());
+                adapter.notifyDataSetChanged();
             }
 
+            //Result of Editing an existing barcode
             if (requestCode == 2 && resultCode == RESULT_OK) {
                 Bundle oldBarcode = data.getBundleExtra("oldBarcode");
                 Barcode newBarcode = Barcode.fromBundle(data.getBundleExtra("newBarcode"));
                 adapter.remove(oldBarcode.getLong("code"), oldBarcode.getString("title"), oldBarcode.getString("desc"), oldBarcode.getFloat("price"));
-                BarcodeFileUtils.overwriteListToFile(this, barcodeList);
+                BarcodeFileUtils.overwriteListToFile(this, adapter.getData());
                 BarcodeFileUtils.writeToFile(this, newBarcode);
                 refreshListView(BarcodeFileUtils.readAll(this));
             }
@@ -125,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 refreshListView(BarcodeFileUtils.readAll(this));
 
                 String barcode = data.getStringExtra("barcode");
-                boolean exists = barcodeList.stream()
+                boolean exists = adapter.getData().stream()
                         .map(listBarcode -> String.valueOf(listBarcode.getCode()))
                         .anyMatch(listBarcode -> listBarcode.equals(barcode));
 
@@ -168,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.context_remove_barcode) {
             adapter.remove(barcode);
-            BarcodeFileUtils.overwriteListToFile(this, barcodeList);
+            BarcodeFileUtils.overwriteListToFile(this, adapter.getData());
             return true;
         } else
             return super.onContextItemSelected(item);
@@ -182,10 +189,16 @@ public class MainActivity extends AppCompatActivity {
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
-        final List<Barcode> cachedBarcodes = new ArrayList<>(barcodeList);
+        final List<Barcode> cachedBarcodes = new ArrayList<>(adapter.getData());
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
+
+        //Update cached barcode every time the search view is expanded
+        searchView.setOnSearchClickListener(v -> {
+            cachedBarcodes.clear();
+            cachedBarcodes.addAll(adapter.getData());
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
