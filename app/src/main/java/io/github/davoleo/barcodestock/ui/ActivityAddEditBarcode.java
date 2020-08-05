@@ -73,7 +73,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             long code = Long.parseLong(txbCode.toString());
             float price = Float.parseFloat(txbPrice.toString());
 
-            if (!title.isEmpty() && !desc.isEmpty()) {
+            if (!title.isEmpty() && !desc.isEmpty() && !title.contains("§") && !desc.contains("§")) {
 
                 Barcode barcode = new Barcode(code, title, desc, price);
                 Intent intent = new Intent();
