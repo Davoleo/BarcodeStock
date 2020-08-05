@@ -80,7 +80,7 @@ public class BarcodeAdapter extends BaseAdapter {
 
         textViewTitle.setText(selectedBarcode.getTitle());
         textViewDesc.setText(selectedBarcode.getDescription());
-        textViewPrice.setText("€" + selectedBarcode.getPrice());
+        textViewPrice.setText("€" + String.format("%.2f", selectedBarcode.getPrice()));
         textViewCode.setText(Long.toString(selectedBarcode.getCode()));
 
         return itemView;
