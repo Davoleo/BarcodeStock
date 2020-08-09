@@ -17,13 +17,15 @@ public class Barcode {
     private String title;
     private String description;
     private float price;
+    private VAT vat;
 
-    public Barcode(long code, String title, String description, float price)
+    public Barcode(long code, String title, String description, float price, VAT vat)
     {
         this.code = code;
         this.title = title;
         this.description = description;
         this.price = price;
+        this.vat = vat;
     }
 
     public long getCode() {
@@ -42,12 +44,17 @@ public class Barcode {
         return price;
     }
 
+    public VAT getVat() {
+        return vat;
+    }
+
     public Bundle toBundle() {
         Bundle bundle = new Bundle();
         bundle.putLong("code", code);
         bundle.putString("title", title);
         bundle.putString("desc", description);
         bundle.putFloat("price", price);
+        bundle.putInt("vat", vat.getValue());
         return bundle;
     }
 
@@ -56,14 +63,21 @@ public class Barcode {
                 bundle.getLong("code"),
                 bundle.getString("title"),
                 bundle.getString("desc"),
-                bundle.getFloat("price")
+                bundle.getFloat("price"),
+                VAT.byValue(bundle.getInt("vat"))
         );
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "Barcode{ Title: " + title + " | Description: " + description + " | Code: " + code + " | Price: " + price + "}";
+        return "Barcode{ Title: "
+                + title + " | Description: "
+                + description + " | Code: "
+                + code + " | Price: "
+                + price + " | VAT: "
+                + vat.getValue()
+                + "}";
     }
 
     public enum BarcodeFields {
