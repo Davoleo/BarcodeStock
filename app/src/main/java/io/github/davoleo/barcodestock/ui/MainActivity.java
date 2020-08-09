@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BarcodeAdapter adapter;
     private AlertDialogs dialogs;
+    private List<Barcode> searchResults = new ArrayList<>();
 
     private int selectedItemId;
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            refreshListView(BarcodeFileUtils.readAll(this));
+            refreshClearBarcodeList(null);
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -200,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
             cachedBarcodes.addAll(adapter.getData());
         });
 
+        searchView.setOnCloseListener(() -> {
+            searchResults.clear();
+            return false;
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -209,14 +215,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                List<Barcode> queryResult = cachedBarcodes.stream()
+                searchResults = cachedBarcodes.stream()
                         .filter(barcode -> barcode.getTitle().contains(s)
                                 || barcode.getDescription().contains(s)
                                 || String.valueOf(barcode.getCode()).contains(s))
                         .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh
-                refreshListView(queryResult);
+                refreshListView(searchResults);
                 return true;
             }
         });
@@ -233,10 +239,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "refreshListView: |!|!|!|!|!|  CALLED  |!|!|!|!|!|");
     }
 
-    public void refreshClearBarcodeList(MenuItem item) {
-        refreshListView(BarcodeFileUtils.readAll(this));
+    public void refreshClearBarcodeList(@Nullable MenuItem item) {
 
-        if (item.getItemId() == R.id.action_clear)
+        if (item == null || item.getItemId() == R.id.action_refresh) {
+            if (searchResults.isEmpty())
+                refreshListView(BarcodeFileUtils.readAll(this));
+            else
+                refreshListView(searchResults);
+        }
+        else if (item.getItemId() == R.id.action_clear)
             dialogs.CLEAR_DIALOG.show();
     }
 
