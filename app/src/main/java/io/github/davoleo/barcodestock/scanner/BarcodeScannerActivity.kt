@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.Size
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -69,6 +70,8 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
             }
         }
 
+        CameraX.initialize(applicationContext, Camera2Config.defaultConfig())
+
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         imageAnalyzer = ImageAnalysis.Builder()
@@ -78,6 +81,11 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
                 .also {
                     it.setAnalyzer(cameraExecutor, this)
                 }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
