@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.widget.Toast;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
+import io.github.davoleo.barcodestock.barcode.VAT;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
 
 public class BarcodeFileUtils {
 
+    private static final char SEPARATOR_CHAR = '§';
+
     public static void writeToFile(Activity activity, Barcode barcode) {
 
         FileWriter writer;
@@ -28,13 +31,15 @@ public class BarcodeFileUtils {
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
             bufferedWriter
-                    .append(String.valueOf(barcode.getCode())).append("§")
-                    .append(barcode.getTitle()).append("§");
+                    .append(String.valueOf(barcode.getCode())).append(SEPARATOR_CHAR)
+                    .append(barcode.getTitle()).append(SEPARATOR_CHAR);
 
             //Encode New Lines
             bufferedWriter.append(barcode.getDescription().replace("\n", "<NL>"));
-            bufferedWriter.append("§");
-            bufferedWriter.append(String.valueOf(barcode.getPrice())).append("\n");
+            bufferedWriter.append(SEPARATOR_CHAR);
+            bufferedWriter.append(String.valueOf(barcode.getPrice()));
+            bufferedWriter.append(SEPARATOR_CHAR);
+            bufferedWriter.append(String.valueOf(barcode.getVat().getValue())).append("\n");
 
             bufferedWriter.close();
             writer.close();
@@ -55,10 +60,11 @@ public class BarcodeFileUtils {
 
             for (Barcode barcode : barcodeList) {
                 bufferedWriter
-                        .append(String.valueOf(barcode.getCode())).append("§")
-                        .append(barcode.getTitle()).append("§")
-                        .append(barcode.getDescription()).append("§")
-                        .append(String.valueOf(barcode.getPrice())).append("\n");
+                        .append(String.valueOf(barcode.getCode())).append(SEPARATOR_CHAR)
+                        .append(barcode.getTitle()).append(SEPARATOR_CHAR)
+                        .append(barcode.getDescription()).append(SEPARATOR_CHAR)
+                        .append(String.valueOf(barcode.getPrice())).append(SEPARATOR_CHAR)
+                        .append(String.valueOf(barcode.getVat().getValue())).append("\n");
             }
 
             bufferedWriter.close();
@@ -90,11 +96,16 @@ public class BarcodeFileUtils {
         try {
 
             while ((currentLine = bufferedReader.readLine()) != null) {
-                barcodeInfo = currentLine.split("§");
+                barcodeInfo = currentLine.split(String.valueOf(SEPARATOR_CHAR));
                 //Restore New Lines
                 String bDesc = barcodeInfo[2].replace("<NL>", "\n");
-                //Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], bDesc, Float.parseFloat(barcodeInfo[3]));
-                //barcodeList.add(barcode);
+                Barcode barcode = new Barcode(
+                        Long.parseLong(barcodeInfo[0]),
+                        barcodeInfo[1],
+                        bDesc,
+                        Float.parseFloat(barcodeInfo[3]),
+                        VAT.byValue(Integer.parseInt(barcodeInfo[4])));
+                barcodeList.add(barcode);
             }
 
             bufferedReader.close();

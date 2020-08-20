@@ -6,9 +6,9 @@
                 android:paddingTop="5dp" android:paddingLeft="10dp" android:paddingRight="10dp"
                 android:paddingBottom="5dp">
 
+    <!-- android:text="Product Title" -->
     <TextView
             android:textSize="20sp"
-            android:text="Product Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/barcodeTitle"
@@ -16,27 +16,27 @@
             android:maxEms="9"
             android:textStyle="bold"/>
 
+<!--    android:text="Product Description"-->
     <TextView
             android:textSize="14sp"
-            android:text="Product Description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/barcodeDesc"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:layout_marginTop="8dp" android:layout_below="@+id/barcodeTitle"/>
 
+<!--    android:text="Product Price"-->
     <TextView
             android:textSize="16sp"
-            android:text="Product Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/barcodePrice"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:layout_marginTop="10dp" android:layout_below="@+id/barcodeDesc"/>
+            android:layout_marginTop="8dp" android:layout_below="@+id/barcodeDesc"/>
 
+<!--    android:text="Barcode"-->
     <TextView
             android:textSize="16sp"
-            android:text="Barcode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/barcode"
@@ -44,5 +44,21 @@
             android:layout_alignTop="@+id/barcodeTitle"
             android:textStyle="bold"
             android:textAlignment="textEnd" android:layout_alignParentEnd="true"/>
+
+    <!-- android:text="VAT" -->
+    <TextView
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barcodeVat"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textAlignment="textEnd"
+            android:layout_below="@+id/barcode"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="36dp"
+            android:padding="4dp"
+            android:background="@drawable/rounded_corners"
+
+    />
 
 </RelativeLayout>

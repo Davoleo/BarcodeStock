@@ -2,6 +2,9 @@ package io.github.davoleo.barcodestock.barcode;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,13 @@ public class BarcodeAdapter extends BaseAdapter {
     private List<Barcode> barcodeList;
 
     private static LayoutInflater inflater;
+
+    //green / yellow / red
+    private final int[] colors = new int[] {
+            0x8800FF00,
+            0x88FFFF00,
+            0x88FF0000
+    };
 
     public BarcodeAdapter(Activity context, List<Barcode> barcodeList) {
         this.context = context;
@@ -75,6 +85,7 @@ public class BarcodeAdapter extends BaseAdapter {
         TextView textViewDesc = itemView.findViewById(R.id.barcodeDesc);
         TextView textViewPrice = itemView.findViewById(R.id.barcodePrice);
         TextView textViewCode = itemView.findViewById(R.id.barcode);
+        TextView textViewVat = itemView.findViewById(R.id.barcodeVat);
 
         Barcode selectedBarcode = barcodeList.get(position);
 
@@ -82,6 +93,12 @@ public class BarcodeAdapter extends BaseAdapter {
         textViewDesc.setText(selectedBarcode.getDescription());
         textViewPrice.setText("€" + String.format("%.2f", selectedBarcode.getPrice()));
         textViewCode.setText(Long.toString(selectedBarcode.getCode()));
+
+        textViewVat.setText(selectedBarcode.getVat().toString());
+        // FIXME: 20/08/2020
+        Drawable drawable = context.getDrawable(R.drawable.rounded_corners);
+        drawable.setColorFilter(new BlendModeColorFilter(colors[selectedBarcode.getVat().ordinal()], BlendMode.COLOR));
+        textViewVat.setBackground(drawable);
 
         return itemView;
     }

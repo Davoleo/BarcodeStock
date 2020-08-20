@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerVat"
-                android:entries="@array/vat_fields"
+                android:labelFor="@id/spinnerVat"
         />
     </com.google.android.material.textfield.TextInputLayout>
 
