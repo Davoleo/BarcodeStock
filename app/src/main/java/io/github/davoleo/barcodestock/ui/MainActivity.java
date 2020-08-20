@@ -1,3 +1,9 @@
+/* -----------------------------------
+ * Author: Davoleo
+ * Class: MainActivity
+ * Project: BarcodeStock
+ * ----------------------------------- */
+
 package io.github.davoleo.barcodestock.ui;
 
 import android.content.Intent;

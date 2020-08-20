@@ -12,4 +12,9 @@
         <item>DESCRIPTION</item>
         <item>PRICE</item>
     </string-array>
+    <string-array name="vat_fields">
+        <item>4%</item>
+        <item>10%</item>
+        <item>22%</item>
+    </string-array>
 </resources>

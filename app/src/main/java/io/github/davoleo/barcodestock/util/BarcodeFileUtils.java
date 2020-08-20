@@ -12,7 +12,7 @@ import java.util.List;
 /*************************************************
  * Author: Davoleo
  * Date / Hour: 11/10/2019 / 20:42
- * Class: WriteUtils
+ * Class: BarcodeFileUtils
  * Project: BarcodeStock
  * Copyright - © - Davoleo - 2019
  **************************************************/
@@ -93,8 +93,8 @@ public class BarcodeFileUtils {
                 barcodeInfo = currentLine.split("§");
                 //Restore New Lines
                 String bDesc = barcodeInfo[2].replace("<NL>", "\n");
-                Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], bDesc, Float.parseFloat(barcodeInfo[3]));
-                barcodeList.add(barcode);
+                //Barcode barcode = new Barcode(Long.parseLong(barcodeInfo[0]), barcodeInfo[1], bDesc, Float.parseFloat(barcodeInfo[3]));
+                //barcodeList.add(barcode);
             }
 
             bufferedReader.close();

@@ -37,6 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/plus"/>
+            android:src="@drawable/plus"
+            android:backgroundTint="@color/colorPrimary"
+            android:foregroundTint="@color/pureWhite"
+    />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

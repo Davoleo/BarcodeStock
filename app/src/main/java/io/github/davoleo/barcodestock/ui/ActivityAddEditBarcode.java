@@ -2,14 +2,11 @@ package io.github.davoleo.barcodestock.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.snackbar.Snackbar;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
@@ -34,67 +31,67 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_barcode);
 
-        confirmButton = findViewById(R.id.button);
-
-        barcodeTxb = findViewById(R.id.txbCode);
-        titleTxb = findViewById(R.id.txbTitle);
-        descriptionTxb = findViewById(R.id.txbDesc);
-        priceTxb = findViewById(R.id.txbPrice);
-
-        editMode = getIntent().getBooleanExtra("edit", false);
-
-        if (getIntent().hasExtra("barcode")) {
-            barcodeTxb.setText(getIntent().getStringExtra("barcode"));
-        }
-
-        if (editMode) {
-            selectedBarcode = Barcode.fromBundle(getIntent().getExtras());
-
-            setTitle(R.string.title_activity_edit_barcode);
-            confirmButton.setText(R.string.btn_save);
-
-            barcodeTxb.setText(String.valueOf(selectedBarcode.getCode()));
-            priceTxb.setText(String.valueOf(selectedBarcode.getPrice()));
-
-            titleTxb.setText(selectedBarcode.getTitle());
-            descriptionTxb.setText(selectedBarcode.getDescription());
-        }
+        //confirmButton = findViewById(R.id.button);
+        //
+        //barcodeTxb = findViewById(R.id.txbCode);
+        //titleTxb = findViewById(R.id.txbTitle);
+        //descriptionTxb = findViewById(R.id.txbDesc);
+        //priceTxb = findViewById(R.id.txbPrice);
+        //
+        //editMode = getIntent().getBooleanExtra("edit", false);
+        //
+        //if (getIntent().hasExtra("barcode")) {
+        //    barcodeTxb.setText(getIntent().getStringExtra("barcode"));
+        //}
+        //
+        //if (editMode) {
+        //    selectedBarcode = Barcode.fromBundle(getIntent().getExtras());
+        //
+        //    setTitle(R.string.title_activity_edit_barcode);
+        //    confirmButton.setText(R.string.btn_save);
+        //
+        //    barcodeTxb.setText(String.valueOf(selectedBarcode.getCode()));
+        //    priceTxb.setText(String.valueOf(selectedBarcode.getPrice()));
+        //
+        //    titleTxb.setText(selectedBarcode.getTitle());
+        //    descriptionTxb.setText(selectedBarcode.getDescription());
+        //}
     }
 
     public void addBarcode(View view)
     {
-        Editable txbCode = barcodeTxb.getText();
-        Editable txbPrice = priceTxb.getText();
-
-        String title = titleTxb.getText().toString();
-        String desc = descriptionTxb.getText().toString();
-
-        try {
-            long code = Long.parseLong(txbCode.toString());
-            float price = Float.parseFloat(txbPrice.toString());
-
-            if (!title.isEmpty() && !desc.isEmpty() && !title.contains("§") && !desc.contains("§")) {
-
-                Barcode barcode = new Barcode(code, title, desc, price);
-                Intent intent = new Intent();
-
-                //Bundle the information about the old barcode
-                if (editMode) {
-                    Bundle barcodeBundle = selectedBarcode.toBundle();
-                    intent.putExtra("oldBarcode", barcodeBundle);
-                }
-
-                //Bundle information about the new Barcode
-                intent.putExtra("newBarcode", barcode.toBundle());
-                setResult(RESULT_OK, intent);
-                this.finish();
-            }
-        }
-        catch (NumberFormatException exception) {
-            exception.printStackTrace();
-            Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG);
-            Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");
-        }
+        //Editable txbCode = barcodeTxb.getText();
+        //Editable txbPrice = priceTxb.getText();
+        //
+        //String title = titleTxb.getText().toString();
+        //String desc = descriptionTxb.getText().toString();
+        //
+        //try {
+        //    long code = Long.parseLong(txbCode.toString());
+        //    float price = Float.parseFloat(txbPrice.toString());
+        //
+        //    if (!title.isEmpty() && !desc.isEmpty() && !title.contains("§") && !desc.contains("§")) {
+        //
+        //        Barcode barcode = new Barcode(code, title, desc, price);
+        //        Intent intent = new Intent();
+        //
+        //        //Bundle the information about the old barcode
+        //        if (editMode) {
+        //            Bundle barcodeBundle = selectedBarcode.toBundle();
+        //            intent.putExtra("oldBarcode", barcodeBundle);
+        //        }
+        //
+        //        //Bundle information about the new Barcode
+        //        intent.putExtra("newBarcode", barcode.toBundle());
+        //        setResult(RESULT_OK, intent);
+        //        this.finish();
+        //    }
+        //}
+        //catch (NumberFormatException exception) {
+        //    exception.printStackTrace();
+        //    Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG);
+        //    Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");
+        //}
     }
 
     /**
