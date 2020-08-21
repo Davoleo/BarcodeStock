@@ -2,6 +2,7 @@ package io.github.davoleo.barcodestock.barcode;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*************************************************
  * Author: Davoleo
@@ -13,11 +14,11 @@ import androidx.annotation.NonNull;
 
 public class Barcode {
 
-    private long code;
-    private String title;
-    private String description;
-    private float price;
-    private VAT vat;
+    private final long code;
+    private final String title;
+    private final String description;
+    private final float price;
+    private final VAT vat;
 
     public Barcode(long code, String title, String description, float price, VAT vat)
     {
@@ -44,6 +45,7 @@ public class Barcode {
         return price;
     }
 
+    @Nullable
     public VAT getVat() {
         return vat;
     }
@@ -54,17 +56,21 @@ public class Barcode {
         bundle.putString("title", title);
         bundle.putString("desc", description);
         bundle.putFloat("price", price);
-        bundle.putInt("vat", vat.getValue());
+        if (vat != null)
+            bundle.putInt("vat", vat.getValue());
         return bundle;
     }
 
     public static Barcode fromBundle(Bundle bundle) {
+
+        VAT vat = bundle.containsKey("vat") ? VAT.byValue(bundle.getInt("vat")) : null;
+
         return new Barcode(
                 bundle.getLong("code"),
                 bundle.getString("title"),
                 bundle.getString("desc"),
                 bundle.getFloat("price"),
-                VAT.byValue(bundle.getInt("vat"))
+                vat
         );
     }
 

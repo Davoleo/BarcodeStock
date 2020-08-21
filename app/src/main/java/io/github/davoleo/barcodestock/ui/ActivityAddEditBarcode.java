@@ -12,12 +12,14 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.barcode.Barcode;
 import io.github.davoleo.barcodestock.barcode.VAT;
 import io.github.davoleo.barcodestock.scanner.BarcodeScannerActivity;
+import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
-public class ActivityAddEditBarcode extends AppCompatActivity {
+public class ActivityAddEditBarcode extends AppCompatActivity implements View.OnFocusChangeListener {
 
     private static final String TAG = "ActivityAddBarcode";
 
@@ -26,13 +28,20 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
 
     private Button confirmButton;
 
+    // Inputs
     private EditText barcodeTxb;
     private EditText titleTxb;
     private EditText descriptionTxb;
     private EditText priceTxb;
+    private AutoCompleteTextView vatTxb;
 
     private ArrayAdapter<String> vatAdapter;
-    private AutoCompleteTextView vatTxb;
+
+    //Input Layouts (Material Outlines)
+    TextInputLayout titleLayout;
+    TextInputLayout descLayout;
+    TextInputLayout priceLayout;
+    TextInputLayout barcodeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,6 +68,17 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         descriptionTxb = findViewById(R.id.txbDesc);
         priceTxb = findViewById(R.id.txbPrice);
         vatTxb = findViewById(R.id.spinnerVat);
+
+        titleLayout = findViewById(R.id.title_layout);
+        descLayout = findViewById(R.id.desc_layout);
+        priceLayout = findViewById(R.id.price_layout);
+        barcodeLayout = findViewById(R.id.barcode_layout);
+
+        barcodeTxb.setOnFocusChangeListener(this);
+        titleTxb.setOnFocusChangeListener(this);
+        descriptionTxb.setOnFocusChangeListener(this);
+        priceTxb.setOnFocusChangeListener(this);
+
         vatTxb.setAdapter(vatAdapter);
 
         editMode = getIntent().getBooleanExtra("edit", false);
@@ -79,13 +99,61 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             titleTxb.setText(selectedBarcode.getTitle());
             descriptionTxb.setText(selectedBarcode.getDescription());
 
-            vatTxb.setText(selectedBarcode.getVat().toString());
+            if (selectedBarcode.getVat() != null)
+                vatTxb.setText(selectedBarcode.getVat().toString());
         }
 
     }
 
+    /**
+     * Called when any of the inputs change focus state<br>
+     * Validates user input
+     */
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+
+        if (hasFocus)
+            return;
+
+        switch (view.getId()) {
+            case R.id.txbTitle:
+                if (titleTxb.getText().toString().isEmpty())
+                    titleLayout.setError(getString(R.string.empty_input_error));
+                else if (titleTxb.getText().toString().contains(String.valueOf(BarcodeFileUtils.SEPARATOR_CHAR)))
+                    titleLayout.setError(getString(R.string.invalid_char_error));
+                else
+                    titleLayout.setError(null);
+                break;
+
+            case R.id.txbDesc:
+                if (titleTxb.getText().toString().contains(String.valueOf(BarcodeFileUtils.SEPARATOR_CHAR)))
+                    descLayout.setError(getString(R.string.invalid_char_error));
+                else
+                    descLayout.setError(null);
+
+            case R.id.txbPrice:
+                //Checks for an integer or floating point number
+                if (!priceTxb.getText().toString().matches("^\\d+.?\\d+"))
+                    priceLayout.setError(getString(R.string.invalid_number_error));
+                else if (priceTxb.getText().toString().isEmpty())
+                    priceLayout.setError(getString(R.string.empty_input_error));
+                else
+                    priceLayout.setError(null);
+
+            case R.id.txbCode:
+                if (barcodeTxb.getText().toString().isEmpty())
+                    barcodeLayout.setError(getString(R.string.empty_input_error));
+                else
+                    barcodeLayout.setError(null);
+
+        }
+    }
+
     public void addBarcode(View view)
     {
+        if (titleLayout.getError() != null || descLayout.getError() != null || priceLayout.getError() != null || barcodeLayout.getError() != null)
+            return;
+
         Editable txbCode = barcodeTxb.getText();
         Editable txbPrice = priceTxb.getText();
 
@@ -93,32 +161,39 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         String desc = descriptionTxb.getText().toString();
 
         try {
-            int vatValue = Integer.parseInt(vatTxb.getText().toString().replace("%", ""));
-            VAT vat = VAT.byValue(vatValue);
-
             long code = Long.parseLong(txbCode.toString());
             float price = Float.parseFloat(txbPrice.toString());
 
-            if (!title.isEmpty() && !desc.isEmpty() && !title.contains("§") && !desc.contains("§")) {
-
-                Barcode barcode = new Barcode(code, title, desc, price, vat);
-                Intent intent = new Intent();
-
-                //Bundle the information about the old barcode
-                if (editMode) {
-                    Bundle barcodeBundle = selectedBarcode.toBundle();
-                    intent.putExtra("oldBarcode", barcodeBundle);
-                }
-
-                //Bundle information about the new Barcode
-                intent.putExtra("newBarcode", barcode.toBundle());
-                setResult(RESULT_OK, intent);
-                this.finish();
+            //If the description is empty set it to a special encoded empty description
+            if (desc.isEmpty()) {
+                desc = BarcodeFileUtils.EMPTY_DESC;
             }
+
+            //If the VAT is empty set it to null
+            VAT vat = null;
+            if (!vatTxb.getText().toString().isEmpty()) {
+                int vatValue = Integer.parseInt(vatTxb.getText().toString().replace("%", ""));
+                vat = VAT.byValue(vatValue);
+            }
+
+            Barcode barcode = new Barcode(code, title, desc, price, vat);
+            Intent intent = new Intent();
+
+            //Bundle the information about the old barcode
+            if (editMode) {
+                Bundle barcodeBundle = selectedBarcode.toBundle();
+                intent.putExtra("oldBarcode", barcodeBundle);
+            }
+
+            //Bundle information about the new Barcode
+            intent.putExtra("newBarcode", barcode.toBundle());
+            setResult(RESULT_OK, intent);
+            this.finish();
         }
         catch (NumberFormatException exception) {
-            //exception.printStackTrace();
-            Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG).show();
+            exception.printStackTrace();
+            Snackbar.make(view,
+                    "NUMBER FORMAT ISSUE / report this on github (this error should have been caught before).", Snackbar.LENGTH_LONG).show();
             Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");
         }
     }

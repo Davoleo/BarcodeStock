@@ -24,12 +24,12 @@ import java.util.List;
 
 public class BarcodeAdapter extends BaseAdapter {
 
-    private Activity context;
-    private List<Barcode> barcodeList;
+    private final Activity context;
+    private final List<Barcode> barcodeList;
 
     private static LayoutInflater inflater;
 
-    //green / yellow / red
+    //VAT Theme colors - least -> most intense
     private final int[] colors = new int[] {
             0xFFC9C9C9,
             0xFF707070,
@@ -93,21 +93,25 @@ public class BarcodeAdapter extends BaseAdapter {
         textViewDesc.setText(selectedBarcode.getDescription());
         textViewPrice.setText("€" + String.format("%.2f", selectedBarcode.getPrice()));
         textViewCode.setText(Long.toString(selectedBarcode.getCode()));
-        textViewVat.setText("VAT: " + selectedBarcode.getVat().toString());
 
-        Drawable drawable = (context.getDrawable(R.drawable.rounded_corners));
+        if (selectedBarcode.getVat() != null)
+        {
+            textViewVat.setText("VAT: " + selectedBarcode.getVat().toString());
 
-        if (drawable instanceof ShapeDrawable)
-            ((ShapeDrawable) drawable).getPaint().setColor(colors[selectedBarcode.getVat().ordinal()]);
-        else if (drawable instanceof GradientDrawable)
-            ((GradientDrawable) drawable).setColor(colors[selectedBarcode.getVat().ordinal()]);
+            Drawable drawable = (context.getDrawable(R.drawable.rounded_corners));
 
-        if (selectedBarcode.getVat() != VAT._4)
-            textViewVat.setTextColor(0xFFFFFFFF);
-        else
-            textViewVat.setTextColor(0xFF000000);
+            if (drawable instanceof ShapeDrawable)
+                ((ShapeDrawable) drawable).getPaint().setColor(colors[selectedBarcode.getVat().ordinal()]);
+            else if (drawable instanceof GradientDrawable)
+                ((GradientDrawable) drawable).setColor(colors[selectedBarcode.getVat().ordinal()]);
 
-        textViewVat.setBackground(drawable);
+            if (selectedBarcode.getVat() != VAT._4)
+                textViewVat.setTextColor(0xFFFFFFFF);
+            else
+                textViewVat.setTextColor(0xFF000000);
+
+            textViewVat.setBackground(drawable);
+        }
 
         return itemView;
     }

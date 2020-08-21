@@ -32,4 +32,7 @@
     <string name="sorting_preferences_summary">Choose the default sorting order of the main products list</string>
     <string name="field_vat">VAT</string>
     <string name="action_remove_vat">Remove VAT</string>
+    <string name="empty_input_error">This input can\'t be empty</string>
+    <string name="invalid_char_error">Invalid character \'§\'</string>
+    <string name="invalid_number_error">Invalid Number!</string>
 </resources>

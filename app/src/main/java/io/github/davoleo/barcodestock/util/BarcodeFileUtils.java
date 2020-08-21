@@ -20,7 +20,9 @@ import java.util.List;
 
 public class BarcodeFileUtils {
 
-    private static final char SEPARATOR_CHAR = '§';
+    public static final char SEPARATOR_CHAR = '§';
+    public static final String NO_VAT = "NoVAT";
+    public static final String EMPTY_DESC = "///";
 
     public static void writeToFile(Activity activity, Barcode barcode) {
 
@@ -39,7 +41,10 @@ public class BarcodeFileUtils {
             bufferedWriter.append(SEPARATOR_CHAR);
             bufferedWriter.append(String.valueOf(barcode.getPrice()));
             bufferedWriter.append(SEPARATOR_CHAR);
-            bufferedWriter.append(String.valueOf(barcode.getVat().getValue())).append("\n");
+            if (barcode.getVat() != null)
+                bufferedWriter.append(String.valueOf(barcode.getVat().getValue())).append("\n");
+            else
+                bufferedWriter.append(NO_VAT).append("\n");
 
             bufferedWriter.close();
             writer.close();
@@ -96,15 +101,21 @@ public class BarcodeFileUtils {
         try {
 
             while ((currentLine = bufferedReader.readLine()) != null) {
+                //Split the different fields
                 barcodeInfo = currentLine.split(String.valueOf(SEPARATOR_CHAR));
                 //Restore New Lines
                 String bDesc = barcodeInfo[2].replace("<NL>", "\n");
+                //Replace the encoded empty desc with an actual empty string
+                bDesc = bDesc.equals(EMPTY_DESC) ? "" : bDesc;
+
+                VAT vat = barcodeInfo[4].equals(NO_VAT) ? null : VAT.byValue(Integer.parseInt(barcodeInfo[4]));
+
                 Barcode barcode = new Barcode(
                         Long.parseLong(barcodeInfo[0]),
                         barcodeInfo[1],
                         bDesc,
                         Float.parseFloat(barcodeInfo[3]),
-                        VAT.byValue(Integer.parseInt(barcodeInfo[4])));
+                        vat);
                 barcodeList.add(barcode);
             }
 
