@@ -2,9 +2,9 @@ package io.github.davoleo.barcodestock.barcode;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +31,9 @@ public class BarcodeAdapter extends BaseAdapter {
 
     //green / yellow / red
     private final int[] colors = new int[] {
-            0x8800FF00,
-            0x88FFFF00,
-            0x88FF0000
+            0xFFC9C9C9,
+            0xFF707070,
+            0xFF333333
     };
 
     public BarcodeAdapter(Activity context, List<Barcode> barcodeList) {
@@ -93,11 +93,20 @@ public class BarcodeAdapter extends BaseAdapter {
         textViewDesc.setText(selectedBarcode.getDescription());
         textViewPrice.setText("€" + String.format("%.2f", selectedBarcode.getPrice()));
         textViewCode.setText(Long.toString(selectedBarcode.getCode()));
+        textViewVat.setText("VAT: " + selectedBarcode.getVat().toString());
 
-        textViewVat.setText(selectedBarcode.getVat().toString());
-        // FIXME: 20/08/2020
-        Drawable drawable = context.getDrawable(R.drawable.rounded_corners);
-        drawable.setColorFilter(new BlendModeColorFilter(colors[selectedBarcode.getVat().ordinal()], BlendMode.COLOR));
+        Drawable drawable = (context.getDrawable(R.drawable.rounded_corners));
+
+        if (drawable instanceof ShapeDrawable)
+            ((ShapeDrawable) drawable).getPaint().setColor(colors[selectedBarcode.getVat().ordinal()]);
+        else if (drawable instanceof GradientDrawable)
+            ((GradientDrawable) drawable).setColor(colors[selectedBarcode.getVat().ordinal()]);
+
+        if (selectedBarcode.getVat() != VAT._4)
+            textViewVat.setTextColor(0xFFFFFFFF);
+        else
+            textViewVat.setTextColor(0xFF000000);
+
         textViewVat.setBackground(drawable);
 
         return itemView;

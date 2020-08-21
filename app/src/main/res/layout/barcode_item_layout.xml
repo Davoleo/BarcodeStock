@@ -56,7 +56,10 @@
             android:layout_below="@+id/barcode"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="36dp"
-            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:background="@drawable/rounded_corners"
 
     />
