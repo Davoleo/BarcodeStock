@@ -114,6 +114,11 @@ public class BarcodeFileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        catch (ArrayIndexOutOfBoundsException e) {
+            Toast.makeText(activity, "Warning: You have some old incompatible products in your device!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Removing all the old products from the storage...", Toast.LENGTH_LONG).show();
+            clearBarcodes(activity);
+        }
 
         return barcodeList;
     }
@@ -142,7 +147,7 @@ public class BarcodeFileUtils {
     }
 
     private static String buildFilePath(Activity activity) {
-        return activity.getApplicationContext().getFilesDir().getPath() + "/" + activity.getString(R.string.barcode_list_filename);
+        return activity.getApplicationContext().getFilesDir().getPath() + "/" + activity.getString(R.string.barcode_list_filename) + ".txt";
     }
 
 }

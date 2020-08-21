@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         INSTANCE = new WeakReference<>(this);
 
+        //Build Alert Dialogs
+        dialogs = new AlertDialogs(this);
+
         //Setup the sorting preferences
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String sortingOption = sharedPreferences.getString(SettingsFragment.SORTING_OPTION, "TITLE");
@@ -100,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
             refreshClearBarcodeList(null);
             swipeRefreshLayout.setRefreshing(false);
         });
-
-        //Build Alert Dialogs
-        dialogs = new AlertDialogs(this);
     }
 
     //Get the added barcode back

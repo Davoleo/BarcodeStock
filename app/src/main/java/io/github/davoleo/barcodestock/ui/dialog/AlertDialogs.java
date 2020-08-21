@@ -33,19 +33,11 @@ public class AlertDialogs {
 
     private AlertDialog buildClearBarcodesDialog() {
         builder.setMessage(R.string.message_clear_barcodes).setCancelable(true);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                BarcodeFileUtils.clearBarcodes(activity);
-                ((MainActivity) activity).refreshListView(BarcodeFileUtils.readAll(activity));
-            }
+        builder.setPositiveButton(R.string.ok, (dialog, id) -> {
+            BarcodeFileUtils.clearBarcodes(activity);
+            ((MainActivity) activity).refreshListView(BarcodeFileUtils.readAll(activity));
         });
-        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.button_cancel, (dialog, id) -> dialog.cancel());
         return builder.create();
     }
 

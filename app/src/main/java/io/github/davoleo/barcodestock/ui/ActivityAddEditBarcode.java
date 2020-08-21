@@ -112,8 +112,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
             }
         }
         catch (NumberFormatException exception) {
-            exception.printStackTrace();
-            Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG);
+            //exception.printStackTrace();
+            Snackbar.make(view, "Barcode/Price might not be valid! Please check them before continuing.", Snackbar.LENGTH_LONG).show();
             Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");
         }
     }

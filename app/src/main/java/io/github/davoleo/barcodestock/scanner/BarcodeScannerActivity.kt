@@ -49,18 +49,24 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         setContentView(R.layout.activity_barcode_scanner)
 
         lifecycle.addObserver(barcodeScanner)
+        CameraX.configureInstance(Camera2Config.defaultConfig())
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
         //Request Camera Permissions
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
+        {
             startCamera()
-        else {
+        }
+        else
+        {
             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                 Toast.makeText(this, "Barcode Scanner requires access to the camera", Toast.LENGTH_SHORT).show()
             }
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
         }
+
+        CameraX.getOrCreateInstance(applicationContext)
 
         graphicOverlay = findViewById<GraphicOverlay>(R.id.cameraPreviewOverlay).apply {
             setOnClickListener { //overlay: View? ->
@@ -69,8 +75,6 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
                 }
             }
         }
-
-        CameraX.initialize(applicationContext, Camera2Config.defaultConfig())
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -84,8 +88,9 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         cameraExecutor.shutdown()
+        CameraX.shutdown()
+        super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
