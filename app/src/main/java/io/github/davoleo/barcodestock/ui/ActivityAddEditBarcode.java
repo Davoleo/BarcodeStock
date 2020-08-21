@@ -31,7 +31,6 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
     private EditText descriptionTxb;
     private EditText priceTxb;
 
-    private String[] vatStrings;
     private ArrayAdapter<String> vatAdapter;
     private AutoCompleteTextView vatTxb;
 
@@ -46,6 +45,12 @@ public class ActivityAddEditBarcode extends AppCompatActivity {
         for (VAT value : VAT.values()) {
             vatAdapter.add(value.toString());
         }
+
+        //When the button to clear the VAT box is clicked
+        findViewById(R.id.buttonClearVat).setOnClickListener(view -> {
+            vatTxb.setText("");
+            vatTxb.clearFocus();
+        });
 
         confirmButton = findViewById(R.id.button);
 

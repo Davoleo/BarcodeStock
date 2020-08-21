@@ -31,4 +31,5 @@
     <string name="sorting_preferences">Sorting Settings</string>
     <string name="sorting_preferences_summary">Choose the default sorting order of the main products list</string>
     <string name="field_vat">VAT</string>
+    <string name="action_remove_vat">Remove VAT</string>
 </resources>

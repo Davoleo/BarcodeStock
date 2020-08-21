@@ -1,138 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.ActivityAddEditBarcode"
-        android:orientation="vertical" android:visibility="visible"
-        android:gravity="center_horizontal"
+        android:layout_width="match_parent" android:layout_height="match_parent"
 >
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="50dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:hint="@string/label_barcode_title"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-    >
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/txbTitle"
-                android:maxLength="@integer/title_max_length"
-                android:importantForAutofill="no" tools:targetApi="o"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:hint="@string/label_barcode_desc"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-    >
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="125dp"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/txbDesc"
-                android:textAllCaps="false"
-                android:maxLength="200"
-                android:importantForAutofill="no" tools:targetApi="o"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:hint="@string/label_barcode_price"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-    >
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/txbPrice"
-                android:importantForAutofill="no" tools:targetApi="o"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/field_vat"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-    >
-        <AutoCompleteTextView
-                android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinnerVat"
-                android:labelFor="@id/spinnerVat"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-    >
+            tools:context=".ui.ActivityAddEditBarcode"
+            android:orientation="vertical" android:visibility="visible"
+            android:gravity="center_horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="30dp"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="@string/label_barcode_code"
+                android:layout_width="match_parent"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:hint="@string/label_barcode_title"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         >
             <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/txbCode"
-                    android:importantForAutofill="no"
-                    tools:targetApi="o"
-                    android:maxLength="13"
+                    android:id="@+id/txbTitle"
+                    android:maxLength="@integer/title_max_length"
+                    android:importantForAutofill="no" tools:targetApi="o"
             />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" app:srcCompat="@drawable/baseline_camera_alt_white_36"
-                android:backgroundTint="@color/colorPrimary"
-                android:id="@+id/buttonScan"
-                android:layout_marginStart="30dp"
-                android:contentDescription="@string/action_scan"
-                android:onClick="startScanner"
-                android:adjustViewBounds="false"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:hint="@string/label_barcode_desc"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/txbDesc"
+                    android:textAllCaps="false"
+                    android:maxLength="200"
+                    android:importantForAutofill="no" tools:targetApi="o"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:hint="@string/label_barcode_price"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/txbPrice"
+                    android:importantForAutofill="no" tools:targetApi="o"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+        >
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/field_vat"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            >
+                <AutoCompleteTextView
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinnerVat"
+                        android:labelFor="@id/spinnerVat"
+                        android:inputType="none"
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_remove_circle_white_24dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:id="@+id/buttonClearVat"
+                    android:layout_marginStart="40dp"
+                    android:contentDescription="@string/action_remove_vat"
+                    android:adjustViewBounds="false"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+        >
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="@string/label_barcode_code"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            >
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:ems="10"
+                        android:id="@+id/txbCode"
+                        android:importantForAutofill="no"
+                        tools:targetApi="o"
+                        android:maxLength="13"
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" app:srcCompat="@drawable/baseline_camera_alt_white_36"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:id="@+id/buttonScan"
+                    android:layout_marginStart="40dp"
+                    android:contentDescription="@string/action_scan"
+                    android:onClick="startScanner"
+                    android:adjustViewBounds="false"
+            />
+        </LinearLayout>
+        <Button
+                android:text="@string/btn_add"
+                android:layout_width="189dp"
+                android:layout_height="60dp"
+                android:id="@+id/button" android:textSize="20sp"
+                android:onClick="addBarcode"
+                android:layout_gravity="center_horizontal"
         />
     </LinearLayout>
-    <Button
-            android:text="@string/btn_add"
-            android:layout_width="189dp"
-            android:layout_height="60dp"
-            android:id="@+id/button" android:textSize="20sp"
-            android:onClick="addBarcode"
-            android:layout_gravity="center_horizontal"
-    />
-</LinearLayout>
+</ScrollView>
