@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
+import android.graphics.RectF
 import android.media.RingtoneManager
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +24,6 @@ import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import io.github.davoleo.barcodestock.R
 import io.github.davoleo.barcodestock.ui.MainActivity
-import io.github.davoleo.barcodestock.util.GraphicUtils
 import kotlinx.android.synthetic.main.activity_barcode_scanner.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -158,14 +159,13 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         //Debug Logging ---
         //Log.i(MainActivity.TAG, "Barcode Type: " + results.firstOrNull()?.valueType)
 
-        // TODO: 31/07/2020 improve this check and make barcode detection less rough
         val reticle = BarcodeGraphic.getReticleBox(graphicOverlay)
         var barcodeInCenter: Barcode?
 
         barcodeInCenter = results.firstOrNull { barcode ->
             //Take barcode's bounding box, otherwise if boundingBox is null then return null as barcodeInCenter
             val boundingBox = barcode.boundingBox ?: return@firstOrNull false
-            val box = GraphicUtils.scale(boundingBox, 4F)
+            val box = scale(boundingBox, 2F)
             box.contains(reticle.centerX(), reticle.centerY())
         }
 
@@ -213,5 +213,13 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 0
+
+        fun scale(rect: Rect, multiplier: Float): RectF {
+            val left = rect.left / multiplier
+            val top = rect.top / multiplier
+            val right = rect.right * multiplier
+            val bottom = rect.bottom * multiplier
+            return RectF(left, top, right, bottom)
+        }
     }
 }
