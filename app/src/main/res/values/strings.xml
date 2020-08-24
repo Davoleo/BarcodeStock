@@ -35,4 +35,5 @@
     <string name="empty_input_error">This input can\'t be empty</string>
     <string name="invalid_char_error">Invalid character \'§\'</string>
     <string name="invalid_number_error">Invalid Number!</string>
+    <string name="settings_search_fields_title">Indexed Fields</string>
 </resources>

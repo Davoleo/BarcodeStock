@@ -31,6 +31,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private BarcodeAdapter adapter;
     private AlertDialogs dialogs;
     private List<Barcode> searchResults = new ArrayList<>();
+
+    private SharedPreferences sharedPreferences;
 
     private int selectedItemId;
 
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         dialogs = new AlertDialogs(this);
 
         //Setup the sorting preferences
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String sortingOption = sharedPreferences.getString(SettingsFragment.SORTING_OPTION, "TITLE");
         BarcodeComparator comparator = new BarcodeComparator(Barcode.BarcodeFields.valueOf(sortingOption));
 
@@ -198,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = ((SearchView) searchItem.getActionView());
         final List<Barcode> cachedBarcodes = new ArrayList<>(adapter.getData());
 
+        final AtomicReference<Set<Barcode.BarcodeFields>> indexedFieldsReference = new AtomicReference<>();
+
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
 
@@ -205,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnSearchClickListener(v -> {
             cachedBarcodes.clear();
             cachedBarcodes.addAll(adapter.getData());
+
+            //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
+            Set<String> indexedFieldsNames = sharedPreferences.getStringSet("indexed_fields", Collections.emptySet());
+            indexedFieldsReference.set(indexedFieldsNames.stream().map(Barcode.BarcodeFields::valueOf).collect(Collectors.toSet()));
         });
 
         searchView.setOnCloseListener(() -> {
@@ -222,9 +232,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
 
                 searchResults = cachedBarcodes.stream()
-                        .filter(barcode -> barcode.getTitle().contains(s)
-                                || barcode.getDescription().contains(s)
-                                || String.valueOf(barcode.getCode()).contains(s))
+                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFieldsReference.get()))
                         .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh
@@ -234,6 +242,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private boolean compareQueryToFields(Barcode barcode, String query, Set<Barcode.BarcodeFields> indexedFields)
+    {
+        boolean caseSensitive = sharedPreferences.getBoolean("case_sensitiveness", false);
+
+        if (!caseSensitive)
+            query = query.toLowerCase();
+
+        Barcode.BarcodeFields[] barcodeFields = Barcode.BarcodeFields.values();
+
+        boolean found = false;
+
+        for (Barcode.BarcodeFields field : indexedFields) {
+            switch (field) {
+                case BARCODE:
+                    found = String.valueOf(barcode.getCode()).contains(query);
+                    break;
+                case TITLE:
+                    String barcodeTitle = barcode.getTitle();
+                    if (!caseSensitive)
+                        barcodeTitle = barcodeTitle.toLowerCase();
+                    found = barcodeTitle.contains(query);
+                    break;
+                case DESCRIPTION:
+                    String barcodeDescription = barcode.getDescription();
+                    if (!caseSensitive)
+                        barcodeDescription = barcodeDescription.toLowerCase();
+                    found = barcodeDescription.contains(query);
+                    break;
+                case PRICE:
+                    found = String.valueOf(barcode.getPrice()).contains(query);
+                    break;
+            }
+        }
+
+        return found;
     }
 
     //UI Refresh and Clear -----------------------------------------

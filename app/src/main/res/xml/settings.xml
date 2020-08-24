@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+>
+
+    <PreferenceCategory
+            android:key="general_category"
+            android:title="General Settings">
 
     <ListPreference android:title="@string/sorting_preferences"
                     android:summary="@string/sorting_preferences_summary"
@@ -7,7 +12,31 @@
                     android:key="sorting_field"
                     android:entries="@array/barcode_fields"
                     android:entryValues="@array/barcode_field_ids"
-                    android:icon="@drawable/ic_sort_48px_black"
+                    android:icon="@drawable/sort_black"
     />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:key="search_category"
+            android:title="Search Settings">
+
+        <SwitchPreference
+                android:key="case_sensitiveness"
+                android:title="Case Sensitiveness"
+                android:icon="@drawable/text_fields_black"
+        />
+
+        <MultiSelectListPreference
+                android:title="@string/settings_search_fields_title"
+                android:summary="Product Fields that can be used in the search bar to look for a specific product"
+                android:entries="@array/barcode_fields"
+                android:entryValues="@array/barcode_field_ids"
+                android:key="indexed_fields"
+                android:icon="@drawable/menu_index_black"
+                android:defaultValue="@array/barcode_field_ids"
+        />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
