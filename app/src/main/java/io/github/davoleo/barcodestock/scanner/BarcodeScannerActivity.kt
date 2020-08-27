@@ -27,6 +27,8 @@ import io.github.davoleo.barcodestock.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_barcode_scanner.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.max
+import kotlin.math.min
 
 class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
@@ -40,6 +42,8 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     private var graphicOverlay: GraphicOverlay? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
+
+    private val targetResolution = Size(480, 640)
 
     private var delayCount = 0
 
@@ -80,7 +84,7 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         imageAnalyzer = ImageAnalysis.Builder()
-                .setTargetResolution(Size(480, 640))
+                .setTargetResolution(targetResolution)
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
@@ -160,12 +164,14 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         //Log.i(MainActivity.TAG, "Barcode Type: " + results.firstOrNull()?.valueType)
 
         val reticle = BarcodeGraphic.getReticleBox(graphicOverlay)
-        var barcodeInCenter: Barcode?
+        val widthScaleFactor: Float = graphicOverlay.width / targetResolution.width.toFloat()
+        val heightScaleFactor: Float = graphicOverlay.height / targetResolution.height.toFloat()
+        val barcodeInCenter: Barcode?
 
         barcodeInCenter = results.firstOrNull { barcode ->
             //Take barcode's bounding box, otherwise if boundingBox is null then return null as barcodeInCenter
             val boundingBox = barcode.boundingBox ?: return@firstOrNull false
-            val box = scale(boundingBox, 2F)
+            val box = translateRect(boundingBox, widthScaleFactor, heightScaleFactor)
             box.contains(reticle.centerX(), reticle.centerY())
         }
 
@@ -176,22 +182,20 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         //val yTop = results.firstOrNull()?.boundingBox?.top ?: -1
         //val xRight = results.firstOrNull()?.boundingBox?.right ?: -1
         //val yBottom = results.firstOrNull()?.boundingBox?.bottom ?: -1
-        //Log.i(MainActivity.TAG, "onSuccess: $xLeft | ${reticle.left}")
-        //Log.i(MainActivity.TAG, "onSuccess: $yTop | ${reticle.top}")
-        //Log.i(MainActivity.TAG, "onSuccess: $xRight | ${reticle.right}")
-        //Log.i(MainActivity.TAG, "onSuccess: $yBottom | ${reticle.bottom}")
-
+        //Log.i(MainActivity.TAG, "barcode LTRB: $xLeft, $yTop, $xRight, $yBottom")
+        //Log.i(MainActivity.TAG, "center XY: ${reticle.centerX()}, ${reticle.centerY()}")
+        //Log.i(MainActivity.TAG, "center XY: ${reticle.width() / 2}, ${reticle.height() / 2}")
         graphicOverlay.clear()
 
         if (barcodeInCenter == null) {
+            delayCount = max(0, --delayCount)
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.colorPrimaryLight)))
-            delayCount = 0
         }
         else {
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.pureRed)))
-            delayCount++
+            delayCount = min(5, ++delayCount)
 
-            if (delayCount > 15) {
+            if (delayCount == 5) {
                 delayCount = 0
                 val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val notifySound = RingtoneManager.getRingtone(applicationContext, notification)
@@ -214,11 +218,26 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 0
 
-        fun scale(rect: Rect, multiplier: Float): RectF {
-            val left = rect.left / multiplier
-            val top = rect.top / multiplier
-            val right = rect.right * multiplier
-            val bottom = rect.bottom * multiplier
+        /**
+         * It doubles the size of the rectangle keeping the ratio if the multiplier is 1
+         */
+        fun increaseSize(rect: Rect, multiplier: Float): RectF {
+            val right = rect.right + (multiplier * rect.width())
+            val bottom = rect.bottom + (multiplier * rect.height())
+            return RectF(rect.left.toFloat(), rect.top.toFloat(), right, bottom)
+        }
+
+        fun translateRect(rect: Rect, widthFactor: Float, heightFactor: Float): RectF
+        {
+            val left = rect.left * widthFactor
+            val top = rect.top * heightFactor
+            val right = rect.right * widthFactor
+            val bottom = rect.bottom * heightFactor
+
+            //Debug Prints ---
+            //Log.i(MainActivity.TAG, "translateRect: Factors: $widthFactor, $heightFactor")
+            Log.i(MainActivity.TAG, "translateRect LTRB: $left, $top, $right, $bottom")
+
             return RectF(left, top, right, bottom)
         }
     }
