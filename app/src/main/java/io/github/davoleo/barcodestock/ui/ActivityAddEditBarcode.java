@@ -105,6 +105,13 @@ public class ActivityAddEditBarcode extends AppCompatActivity implements View.On
 
     }
 
+    private void validateInputs() {
+        onFocusChange(barcodeTxb, false);
+        onFocusChange(titleTxb, false);
+        onFocusChange(descriptionTxb, false);
+        onFocusChange(priceTxb, false);
+    }
+
     /**
      * Called when any of the inputs change focus state<br>
      * Validates user input
@@ -132,10 +139,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity implements View.On
                     descLayout.setError(null);
 
             case R.id.txbPrice:
-                //Checks for an integer or floating point number
-                if (!priceTxb.getText().toString().matches("^\\d+.?\\d+"))
-                    priceLayout.setError(getString(R.string.invalid_number_error));
-                else if (priceTxb.getText().toString().isEmpty())
+                if (priceTxb.getText().toString().isEmpty())
                     priceLayout.setError(getString(R.string.empty_input_error));
                 else
                     priceLayout.setError(null);
@@ -151,6 +155,8 @@ public class ActivityAddEditBarcode extends AppCompatActivity implements View.On
 
     public void addBarcode(View view)
     {
+        validateInputs();
+
         if (titleLayout.getError() != null || descLayout.getError() != null || priceLayout.getError() != null || barcodeLayout.getError() != null)
             return;
 
@@ -193,7 +199,7 @@ public class ActivityAddEditBarcode extends AppCompatActivity implements View.On
         catch (NumberFormatException exception) {
             exception.printStackTrace();
             Snackbar.make(view,
-                    "NUMBER FORMAT ISSUE / report this on github (this error should have been caught before).", Snackbar.LENGTH_LONG).show();
+                    "Invalid Number Format! This error should have been caught earlier, please report it on github", Snackbar.LENGTH_LONG).show();
             Log.w(TAG, "addBarcode: Price or Code fields are not formatted correctly");
         }
     }

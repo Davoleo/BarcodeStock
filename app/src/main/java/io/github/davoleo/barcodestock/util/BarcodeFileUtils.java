@@ -68,8 +68,11 @@ public class BarcodeFileUtils {
                         .append(String.valueOf(barcode.getCode())).append(SEPARATOR_CHAR)
                         .append(barcode.getTitle()).append(SEPARATOR_CHAR)
                         .append(barcode.getDescription()).append(SEPARATOR_CHAR)
-                        .append(String.valueOf(barcode.getPrice())).append(SEPARATOR_CHAR)
-                        .append(String.valueOf(barcode.getVat().getValue())).append("\n");
+                        .append(String.valueOf(barcode.getPrice())).append(SEPARATOR_CHAR);
+                if (barcode.getVat() != null)
+                    bufferedWriter.append(String.valueOf(barcode.getVat().getValue())).append("\n");
+                else
+                    bufferedWriter.append(NO_VAT).append("\n");;
             }
 
             bufferedWriter.close();
