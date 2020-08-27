@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                     exists = false;
 
                 if (exists) {
+                    updateQueryCache(adapter.getData());
                     SearchView searchView = findViewById(R.id.action_search);
                     searchView.setIconified(false);
                     searchView.setQuery(barcode, true);
@@ -209,8 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Update cached barcode every time the search view is expanded
         searchView.setOnSearchClickListener(v -> {
-            cachedBarcodes.clear();
-            cachedBarcodes.addAll(adapter.getData());
+            updateQueryCache(cachedBarcodes);
 
             //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
             Set<String> indexedFieldsNames = sharedPreferences.getStringSet("indexed_fields", Collections.emptySet());
@@ -242,6 +242,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private void updateQueryCache(List<Barcode> cachedBarcodes) {
+        cachedBarcodes.clear();
+        cachedBarcodes.addAll(adapter.getData());
     }
 
     private boolean compareQueryToFields(Barcode barcode, String query, Set<Barcode.BarcodeFields> indexedFields)
