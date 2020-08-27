@@ -90,7 +90,10 @@ public class BarcodeAdapter extends BaseAdapter {
         Barcode selectedBarcode = barcodeList.get(position);
 
         textViewTitle.setText(selectedBarcode.getTitle());
-        textViewDesc.setText(selectedBarcode.getDescription());
+
+        String description = selectedBarcode.getDescription().equals("///") ? "" : selectedBarcode.getDescription();
+        textViewDesc.setText(description);
+
         textViewPrice.setText("€" + String.format("%.2f", selectedBarcode.getPrice()));
         textViewCode.setText(Long.toString(selectedBarcode.getCode()));
 
@@ -111,6 +114,12 @@ public class BarcodeAdapter extends BaseAdapter {
                 textViewVat.setTextColor(0xFF000000);
 
             textViewVat.setBackground(drawable);
+        }
+        else {
+            GradientDrawable drawable = ((GradientDrawable) context.getDrawable(R.drawable.rounded_corners));
+            drawable.setColor(0xFFFFFFFF);
+            textViewVat.setBackground(drawable);
+            textViewVat.setText("");
         }
 
         return itemView;
