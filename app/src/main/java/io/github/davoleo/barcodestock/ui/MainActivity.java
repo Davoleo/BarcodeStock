@@ -28,11 +28,7 @@ import io.github.davoleo.barcodestock.ui.dialog.AlertDialogs;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
@@ -203,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = ((SearchView) searchItem.getActionView());
         final List<Barcode> cachedBarcodes = new ArrayList<>(adapter.getData());
 
-        final AtomicReference<Set<Barcode.BarcodeFields>> indexedFieldsReference = new AtomicReference<>();
+        Set<Barcode.BarcodeFields> indexedFieldsReference = new HashSet<>();
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
@@ -213,8 +209,12 @@ public class MainActivity extends AppCompatActivity {
             updateQueryCache(cachedBarcodes);
 
             //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
-            Set<String> indexedFieldsNames = sharedPreferences.getStringSet("indexed_fields", Collections.emptySet());
-            indexedFieldsReference.set(indexedFieldsNames.stream().map(Barcode.BarcodeFields::valueOf).collect(Collectors.toSet()));
+            indexedFieldsReference.addAll(
+                    sharedPreferences.getStringSet("indexed_fields", Collections.emptySet())
+                            .stream()
+                            .map(Barcode.BarcodeFields::valueOf)
+                            .collect(Collectors.toSet())
+            );
         });
 
         searchView.setOnCloseListener(() -> {
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
 
                 searchResults = cachedBarcodes.stream()
-                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFieldsReference.get()))
+                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFieldsReference))
                         .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh
@@ -256,29 +256,27 @@ public class MainActivity extends AppCompatActivity {
         if (!caseSensitive)
             query = query.toLowerCase();
 
-        Barcode.BarcodeFields[] barcodeFields = Barcode.BarcodeFields.values();
-
         boolean found = false;
 
         for (Barcode.BarcodeFields field : indexedFields) {
             switch (field) {
                 case BARCODE:
-                    found = String.valueOf(barcode.getCode()).contains(query);
+                    found |= String.valueOf(barcode.getCode()).contains(query);
                     break;
                 case TITLE:
                     String barcodeTitle = barcode.getTitle();
                     if (!caseSensitive)
                         barcodeTitle = barcodeTitle.toLowerCase();
-                    found = barcodeTitle.contains(query);
+                    found |= barcodeTitle.contains(query);
                     break;
                 case DESCRIPTION:
                     String barcodeDescription = barcode.getDescription();
                     if (!caseSensitive)
                         barcodeDescription = barcodeDescription.toLowerCase();
-                    found = barcodeDescription.contains(query);
+                    found |= barcodeDescription.contains(query);
                     break;
                 case PRICE:
-                    found = String.valueOf(barcode.getPrice()).contains(query);
+                    found |= String.valueOf(barcode.getPrice()).contains(query);
                     break;
             }
         }
