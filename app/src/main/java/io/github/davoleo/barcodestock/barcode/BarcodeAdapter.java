@@ -117,7 +117,7 @@ public class BarcodeAdapter extends BaseAdapter {
         }
         else {
             GradientDrawable drawable = ((GradientDrawable) context.getDrawable(R.drawable.rounded_corners));
-            drawable.setColor(0xFFFFFFFF);
+            drawable.setAlpha(0);
             textViewVat.setBackground(drawable);
             textViewVat.setText("");
         }
