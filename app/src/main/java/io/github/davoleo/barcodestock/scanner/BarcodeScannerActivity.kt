@@ -193,9 +193,9 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
         }
         else {
             graphicOverlay.add(BarcodeGraphic(graphicOverlay, ContextCompat.getColor(applicationContext, R.color.pureRed)))
-            delayCount = min(5, ++delayCount)
+            delayCount = min(2, ++delayCount)
 
-            if (delayCount == 5) {
+            if (delayCount == 2) {
                 delayCount = 0
                 val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val notifySound = RingtoneManager.getRingtone(applicationContext, notification)

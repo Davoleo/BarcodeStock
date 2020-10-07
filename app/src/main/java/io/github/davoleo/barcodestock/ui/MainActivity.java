@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "BarcodeStock";
     public static WeakReference<MainActivity> INSTANCE;
 
+    private Menu mainMenu;
+
     private BarcodeAdapter adapter;
     private AlertDialogs dialogs;
     private List<Barcode> searchResults = new ArrayList<>();
@@ -111,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data != null) {
-
             //Result of Adding a new barcode
             if (requestCode == 1 && resultCode == RESULT_OK) {
                 Bundle barcodeBundle = data.getBundleExtra("newBarcode");
@@ -135,8 +136,10 @@ public class MainActivity extends AppCompatActivity {
                 refreshListView(BarcodeFileUtils.readAll(this));
             }
 
+            //Request Code:
+            //3: Scanning a barcode from the MainActivity
+            //4: Scanning a barcode from the AddEditBarcode Activity
             if ((requestCode == 3 || requestCode == 4) && resultCode == RESULT_OK) {
-                refreshListView(BarcodeFileUtils.readAll(this));
 
                 String barcode = data.getStringExtra("barcode");
                 boolean exists = adapter.getData().stream()
@@ -147,16 +150,17 @@ public class MainActivity extends AppCompatActivity {
                     exists = false;
 
                 if (exists) {
-                    updateQueryCache(adapter.getData());
-                    SearchView searchView = findViewById(R.id.action_search);
-                    searchView.setIconified(false);
+                    MenuItem searchItem = mainMenu.findItem(R.id.action_search);
+                    searchItem.expandActionView();
+                    SearchView searchView = ((SearchView) searchItem.getActionView());
                     searchView.setQuery(barcode, true);
                 } else {
                     Intent intent = new Intent(getApplicationContext(), ActivityAddEditBarcode.class).putExtra("edit", false).putExtra("barcode", barcode);
                     startActivityForResult(intent, 1);
                 }
             }
-        } else {
+        }
+        else {
             Log.w(TAG, "The activity result intent is null!");
         }
     }
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        mainMenu = menu;
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = ((SearchView) searchItem.getActionView());
@@ -205,21 +210,33 @@ public class MainActivity extends AppCompatActivity {
         searchView.onActionViewCollapsed();
 
         //Update cached barcode every time the search view is expanded
-        searchView.setOnSearchClickListener(v -> {
-            updateQueryCache(cachedBarcodes);
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                updateQueryCache(cachedBarcodes);
 
-            //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
-            indexedFieldsReference.addAll(
-                    sharedPreferences.getStringSet("indexed_fields", Collections.emptySet())
-                            .stream()
-                            .map(Barcode.BarcodeFields::valueOf)
-                            .collect(Collectors.toSet())
-            );
-        });
+                //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
+                indexedFieldsReference.addAll(
+                        sharedPreferences.getStringSet("indexed_fields", Collections.emptySet())
+                                .stream()
+                                .map(Barcode.BarcodeFields::valueOf)
+                                .collect(Collectors.toSet())
+                );
 
-        searchView.setOnCloseListener(() -> {
-            searchResults.clear();
-            return false;
+                searchView.onActionViewExpanded();
+                searchView.setFocusable(true);
+                searchView.requestFocusFromTouch();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchResults.clear();
+                searchView.setFocusable(false);
+                searchView.clearFocus();
+                searchView.onActionViewCollapsed();
+                return true;
+            }
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -235,7 +252,8 @@ public class MainActivity extends AppCompatActivity {
                         .filter(barcode -> compareQueryToFields(barcode, s, indexedFieldsReference))
                         .collect(Collectors.toList());
 
-                //TODO find some way to optimize UI refresh
+                //TODO find some way to optimize UI refresh +
+                // Fix refresh showing all elements when search results == empty
                 refreshListView(searchResults);
                 return true;
             }
@@ -287,10 +305,13 @@ public class MainActivity extends AppCompatActivity {
     //UI Refresh and Clear -----------------------------------------
     public void refreshListView (List<Barcode> newList) {
         adapter.getData().clear();
-        sortBarcodeList(newList);
-        adapter.getData().addAll(newList);
+
+        if (!newList.isEmpty()) {
+            sortBarcodeList(newList);
+            adapter.getData().addAll(newList);
+        }
         adapter.notifyDataSetChanged();
-        Log.d(TAG, "refreshListView: |!|!|!|!|!|  CALLED  |!|!|!|!|!|");
+        Log.d(TAG, "refreshListView: |!|!|!|!|!|  VIEW REFRESHED  |!|!|!|!|!|");
     }
 
     public void refreshClearBarcodeList(@Nullable MenuItem item) {

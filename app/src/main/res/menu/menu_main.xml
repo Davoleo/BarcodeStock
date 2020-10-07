@@ -7,7 +7,7 @@
           android:title="@string/action_search"
           android:icon="@drawable/search_icon"
           android:orderInCategory="1"
-          app:showAsAction="ifRoom"
+          app:showAsAction="ifRoom|collapseActionView"
           app:actionViewClass="android.widget.SearchView"
     />
 
