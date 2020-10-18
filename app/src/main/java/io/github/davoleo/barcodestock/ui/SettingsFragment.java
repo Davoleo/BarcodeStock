@@ -14,10 +14,14 @@ import android.util.Log;
 import androidx.preference.PreferenceFragmentCompat;
 import io.github.davoleo.barcodestock.R;
 import io.github.davoleo.barcodestock.util.BarcodeFileUtils;
+import kotlin.collections.SetsKt;
+
+import java.util.Set;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     public static final String SORTING_OPTION = "sorting_field";
+    public static final Set<String> DEFAULT_INDEXED_FIELDS = SetsKt.hashSetOf("BARCODE", "TITLE", "DESCRIPTION", "PRICE");
 
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -26,10 +30,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.settings, rootKey);
 
         preferenceChangeListener = (sharedPreferences, key) -> {
-            Log.d(MainActivity.TAG, "onSharedPreferenceChanged: Preferred sorting method was changed");
-            MainActivity mainActivity = MainActivity.INSTANCE.get();
-            if (mainActivity != null) {
-                mainActivity.refreshListView(BarcodeFileUtils.readAll(mainActivity));
+            if (key.equals(SORTING_OPTION)) {
+                Log.d(MainActivity.TAG, "onSharedPreferenceChanged: Preferred sorting method was changed");
+                MainActivity mainActivity = MainActivity.INSTANCE.get();
+                if (mainActivity != null) {
+                    mainActivity.refreshListView(BarcodeFileUtils.readAll(mainActivity));
+                }
             }
         };
     }

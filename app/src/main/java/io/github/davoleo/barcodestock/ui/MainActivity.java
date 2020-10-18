@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         final SearchView searchView = ((SearchView) searchItem.getActionView());
         final List<Barcode> cachedBarcodes = new ArrayList<>(adapter.getData());
 
-        Set<Barcode.BarcodeFields> indexedFieldsReference = new HashSet<>();
+        Set<Barcode.BarcodeFields> indexedFields = new HashSet<>();
 
         searchView.clearFocus();
         searchView.onActionViewCollapsed();
@@ -215,9 +215,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 updateQueryCache(cachedBarcodes);
 
-                //Arrays.stream(barcodeFields).map(Enum::name).collect(Collectors.toSet())
-                indexedFieldsReference.addAll(
-                        sharedPreferences.getStringSet("indexed_fields", Collections.emptySet())
+                indexedFields.addAll(
+                        sharedPreferences.getStringSet("indexed_fields", SettingsFragment.DEFAULT_INDEXED_FIELDS)
                                 .stream()
                                 .map(Barcode.BarcodeFields::valueOf)
                                 .collect(Collectors.toSet())
@@ -235,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.setFocusable(false);
                 searchView.clearFocus();
                 searchView.onActionViewCollapsed();
+                refreshListView(adapter.getData());
                 return true;
             }
         });
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
 
                 searchResults = cachedBarcodes.stream()
-                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFieldsReference))
+                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFields))
                         .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh +
