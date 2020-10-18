@@ -127,7 +127,7 @@ class BarcodeScannerActivity : AppCompatActivity(), ImageAnalysis.Analyzer {
 
                 //Bind our use cases to camera
                 camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
-                preview?.setSurfaceProvider(cameraPreview.createSurfaceProvider())
+                preview?.setSurfaceProvider(cameraPreview.surfaceProvider)
             } catch (e: Exception) {
                 Log.e(MainActivity.TAG, "There was an issue binding the new use case", e)
             }
