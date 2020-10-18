@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.setFocusable(false);
                 searchView.clearFocus();
                 searchView.onActionViewCollapsed();
-                refreshListView(adapter.getData());
+                refreshListView(cachedBarcodes);
                 return true;
             }
         });
@@ -246,10 +246,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(String qString) {
 
                 searchResults = cachedBarcodes.stream()
-                        .filter(barcode -> compareQueryToFields(barcode, s, indexedFields))
+                        .filter(barcode -> compareQueryToFields(barcode, qString, indexedFields))
                         .collect(Collectors.toList());
 
                 //TODO find some way to optimize UI refresh +
@@ -316,8 +316,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void refreshClearBarcodeList(@Nullable MenuItem item) {
 
+        //Swipe refresh || main menu option to refresh
         if (item == null || item.getItemId() == R.id.action_refresh) {
-            if (searchResults.isEmpty())
+            //if the searchView is not expanded read barcodes from the file
+            if (!mainMenu.findItem(R.id.action_search).isActionViewExpanded())
                 refreshListView(BarcodeFileUtils.readAll(this));
             else
                 refreshListView(searchResults);
